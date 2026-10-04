@@ -24,9 +24,9 @@ export function ChannelContent(props: ChannelContentProps) {
 
   // Personalized channels bypass the normal content loading and fetch
   // user-specific data from dedicated endpoints.
-  if ((channel.config as any).contentType === 'personalized') {
+  if (channel.config.contentType === 'personalized') {
     const endpoint =
-      (channel.config as any).autoUpdateMethod === 'recentlyPlayed'
+      channel.config.autoUpdateMethod === 'recentlyPlayed'
         ? 'recently-played'
         : 'made-for-you';
     return (

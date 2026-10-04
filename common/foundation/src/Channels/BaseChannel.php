@@ -243,6 +243,8 @@ abstract class BaseChannel extends BaseModel
             'model_type' => static::MODEL_TYPE,
             'config' => [
                 'contentModel' => $this->config['contentModel'],
+                'contentType' => $this->config['contentType'] ?? null,
+                'autoUpdateMethod' => $this->config['autoUpdateMethod'] ?? null,
                 'hideTitle' => $this->config['hideTitle'] ?? false,
                 'layout' => $this->config['layout'] ?? null,
                 'nestedLayout' => $this->config['nestedLayout'] ?? null,

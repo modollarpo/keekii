@@ -13,7 +13,7 @@ export interface ChannelConfig {
   restriction?: string | null;
   restrictionModelId?: 'urlParam' | number | null;
   contentModel: string;
-  contentType: 'listAll' | 'manual' | 'autoUpdate';
+  contentType: 'listAll' | 'manual' | 'autoUpdate' | 'personalized';
   contentOrder: string;
   // layout user selected manually, it's stored in a cookie and set as this
   // prop in channel controller so there are no mismatches during initial load
