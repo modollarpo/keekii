@@ -57,9 +57,9 @@ export function Component() {
             permanently.
           </p>
           <p>
-            Premium exists for the things Free cannot do: downloads, the highest
-            available audio quality, no advertising, and unlimited skips. If none
-            of those matter to you, stay on Free.
+            Premium exists for the things Free cannot do: downloads, no
+            advertising, and unlimited skips. If none of those matter to you,
+            stay on Free.
           </p>
           <p>
             You can{' '}

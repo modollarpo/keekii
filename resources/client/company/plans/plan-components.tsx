@@ -120,10 +120,6 @@ const comparisonRows: ComparisonRow[] = [
     values: ['Yes', 'No', 'No', 'No', 'No'],
   },
   {
-    label: 'Highest audio quality',
-    values: [false, true, true, true, true],
-  },
-  {
     label: 'Offline downloads',
     values: [false, true, true, true, true],
   },

@@ -169,7 +169,7 @@ export function Component() {
         <CompanyProse>
           <p>
 
-            <Trans message="Keekii Free carries advertising, which is what pays for the service and keeps it free. Premium removes the ads and adds the features that cost us money to deliver -- higher audio quality, unlimited skips, offline listening without a cap and the creator-cleared catalogue." />
+            <Trans message="Keekii Free carries advertising, which is what pays for the service and keeps it free. Premium removes the ads and adds the features that cost us money to deliver -- unlimited skips, offline listening without a cap and the creator-cleared catalogue." />
 
             </p>
           <p>
@@ -226,7 +226,7 @@ export function Component() {
             {
               question: 'Can I use the app offline?',
               answer:
-                'Yes, download music for offline listening. Downloads use device storage, and the size depends on the audio quality you choose.',
+                'Yes, download music for offline listening. Downloads use device storage, so a bigger file takes more room on your device.',
             },
             {
               question: 'Will my playlists follow me between app and web?',
