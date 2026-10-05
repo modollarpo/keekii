@@ -1,5 +1,6 @@
 import {Footer} from '@common/ui/footer/footer';
 import {Navbar} from '@common/ui/navigation/navbar/navbar';
+import {SiteNavigationDrawer} from '@app/navigation/site-navigation-drawer';
 import {StaticPageTitle} from '@common/seo/static-page-title';
 import {Helmet} from '@common/seo/helmet';
 import {getBootstrapData} from '@ui/bootstrap-data/bootstrap-data-store';
@@ -65,6 +66,7 @@ export function LegalPageLayout({
       )}
 
       <Navbar.Root className="sticky top-0 z-10 border-b bg-background">
+        <SiteNavigationDrawer />
         <Navbar.Logo />
         <Navbar.Content className="ml-auto">
           <Navbar.AuthContent />

@@ -1,6 +1,5 @@
 import {ChannelContentModel} from '@app/admin/channels/channel-content-config';
 import {appQueries} from '@app/app-queries';
-import {SiteNavigationDrawer} from '@app/navigation/site-navigation-drawer';
 import {ALBUM_MODEL} from '@app/web-player/albums/album';
 import {AlbumImage} from '@app/web-player/albums/album-image/album-image';
 import {AlbumLink, getAlbumLink} from '@app/web-player/albums/album-link';
@@ -211,12 +210,6 @@ export function Component() {
         heroSearchBarSlot: HeroSearchBar,
       }}
     >
-      {/* The landing page has no navbar of its own, so the burger floats over
-          the hero rather than shifting every section down by a header height.
-          The surface is drawn here because the hero artwork is arbitrary. */}
-      <div className="fixed top-3 left-3 z-50 rounded-md border bg-background/90 backdrop-blur-sm">
-        <SiteNavigationDrawer />
-      </div>
       <CommonLandingPage />
     </LandingPageContext.Provider>
   );
