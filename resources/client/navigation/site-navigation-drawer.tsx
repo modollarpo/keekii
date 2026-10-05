@@ -6,6 +6,7 @@ import {webPlayerSidebarIcons} from '@app/web-player/layout/web-player-sidebar-i
 import {getCompanyNavGroups} from '@app/company/company-site-map';
 import {MenuItemIcon} from '@common/menus/custom-menu';
 import {MenuItemConfig} from '@common/menus/menu-config';
+import {Button} from '@shadcn/button/button';
 import {Drawer} from '@shadcn/drawer/drawer';
 import {Trans} from '@ui/i18n/trans';
 import {MenuIcon} from 'lucide-react';
@@ -31,11 +32,13 @@ export function SiteNavigationDrawer() {
   return (
     <Drawer.Root position="left" open={open} onOpenChange={setOpen}>
       <Drawer.Trigger
-        render={<button />}
+        // `size="icon"` is the same control the shared Navbar.Menu renders for
+        // its own burger (navbar.tsx), so the two read identically in the bar.
+        render={<Button variant="ghost" size="icon" />}
         aria-label="Open menu"
-        className="flex size-9 shrink-0 items-center justify-center rounded-md text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="shrink-0"
       >
-        <MenuIcon className="size-5" />
+        <MenuIcon />
       </Drawer.Trigger>
 
       <Drawer.Portal>

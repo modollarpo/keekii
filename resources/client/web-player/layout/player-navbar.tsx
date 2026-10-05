@@ -10,7 +10,7 @@ import {Dropdown} from '@shadcn/dropdown/dropdown';
 import {Trans} from '@ui/i18n/trans';
 import {useSettings} from '@ui/settings/use-settings';
 import {cn} from '@ui/utils/cn';
-import {MicVocalIcon} from 'lucide-react';
+import {MicVocalIcon, MenuIcon} from 'lucide-react';
 import {Fragment, use, useMemo} from 'react';
 import {Link} from 'react-router';
 
@@ -53,7 +53,11 @@ export function PlayerNavbar() {
           leftSidebar.status === 'expanded' && 'min-w-57',
         )}
       >
-        <DashboardLayout.SidebarToggle sidebar="left" />
+        {/* Hamburger, not the panel glyph: one toggle shape on every screen
+            size, and `size-9` matches the 38px logo beside it on desktop. */}
+        <DashboardLayout.SidebarToggle sidebar="left" className="size-9">
+          <MenuIcon />
+        </DashboardLayout.SidebarToggle>
         <Navbar.Logo />
       </div>
       <SearchAutocomplete />

@@ -211,9 +211,12 @@ function SectionScrollContainer({
 function SidebarToggle({
   sidebar: sidebarName = 'left',
   children,
+  className,
 }: {
   sidebar?: 'left' | 'right';
   children?: ReactNode;
+  /** Lets the caller match the control to the height of the bar it sits in. */
+  className?: string;
 }) {
   const ctx = use(DashboardLayoutContext);
   if (!ctx) return null;
@@ -231,6 +234,7 @@ function SidebarToggle({
       <Tooltip.Trigger
         data-slot="sidebar-toggle-button"
         render={<Button variant="ghost" size="icon-sm" />}
+        className={className}
         onClick={() => sidebar.toggleStatus()}
       >
         {children || defaultIcon}
