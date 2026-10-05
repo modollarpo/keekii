@@ -1,4 +1,4 @@
-﻿import {appQueries} from '@app/app-queries';
+import {appQueries} from '@app/app-queries';
 import {PartialArtist} from '@app/web-player/artists/artist';
 import {ArtistGridItem} from '@app/web-player/artists/artist-grid-item';
 import {getArtistLink} from '@app/web-player/artists/artist-link';

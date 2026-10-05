@@ -1,4 +1,4 @@
-﻿@php
+@php
     $page = $data ?? [];
     $description = \Illuminate\Support\Str::limit(
         trim(preg_replace('/\s+/', ' ', strip_tags(str_replace(

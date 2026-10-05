@@ -1,4 +1,4 @@
-﻿<meta property="og:site_name" content="{{ settings('branding.site_name') }}" />
+<meta property="og:site_name" content="{{ settings('branding.site_name') }}" />
 <meta property="twitter:card" content="summary" />
 <meta property="og:type" content="website" />
 <title>Search results for '{{$query}}' | {{ settings('branding.site_name') }}</title>

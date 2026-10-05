@@ -1,4 +1,4 @@
-﻿import {appQueries} from '@app/app-queries';
+import {appQueries} from '@app/app-queries';
 import {FullAlbum} from '@app/web-player/albums/album';
 import {AlbumGridItem} from '@app/web-player/albums/album-grid-item';
 import {getArtistLink} from '@app/web-player/artists/artist-link';

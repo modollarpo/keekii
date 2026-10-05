@@ -1,4 +1,4 @@
-﻿import {
+import {
   ArrowRightLeftIcon,
   FileCheckIcon,
   FolderUpIcon,

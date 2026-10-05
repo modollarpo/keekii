@@ -1,4 +1,4 @@
-﻿import {
+import {
   BadgeCheckIcon,
   ChartNoAxesColumnIcon,
   FileMusicIcon,

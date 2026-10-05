@@ -1,4 +1,4 @@
-﻿<meta property="og:site_name" content="{{ settings('branding.site_name') }}" />
+<meta property="og:site_name" content="{{ settings('branding.site_name') }}" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="og:type" content="music.album" />
 <meta property="music.release_date" content="{{ $album['release_date'] }}" />

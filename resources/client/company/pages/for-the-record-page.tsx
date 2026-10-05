@@ -1,4 +1,4 @@
-﻿import {
+import {
   AccessibilityIcon,
   BookOpenCheckIcon,
   CoinsIcon,

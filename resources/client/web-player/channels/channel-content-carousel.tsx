@@ -1,4 +1,4 @@
-﻿import {ChannelContentProps} from '@app/web-player/channels/channel-content';
+import {ChannelContentProps} from '@app/web-player/channels/channel-content';
 import {ChannelContentGridItem} from '@app/web-player/channels/channel-content-grid-item';
 import {ChannelHeading} from '@app/web-player/channels/channel-heading';
 import {ContentGridItemLayout} from '@app/web-player/channels/content-grid-item-layout';
