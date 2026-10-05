@@ -131,6 +131,12 @@ html.dark {
   --color-twitter: oklch(0 0 0);
   --color-envato: oklch(0.6486 0.1564 130.92);
   --color-tumblr: oklch(0.4716 0.1231 258.12);
+
+  /* Shared by the two ambient-artwork treatments (player bar, player page
+     header). It is the radius at which the artwork stops reading as an image
+     and starts reading as a colour field, so the two have to stay identical or
+     the same cover tints the UI two different ways. */
+  --blur-ambient: 80px;
 }
 
 @utility bg {

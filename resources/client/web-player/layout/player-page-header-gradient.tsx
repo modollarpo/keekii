@@ -18,7 +18,7 @@ export function PlayerPageHeaderGradient({
     <div className="pointer-events-none isolate block">
       <div
         className={clsx(
-          'absolute top-0 right-0 left-0 z-10 blur-[80px]',
+          'absolute top-0 right-0 left-0 z-10 blur-ambient',
           height,
         )}
       >

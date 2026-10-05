@@ -72,7 +72,7 @@ function QueuedTrack() {
           </ContextMenu>
           {track.artists?.length ? (
             <ContextMenu>
-              <ContextMenu.Trigger className="text-muted-foreground text-be-caption font-medium mt-0.5 block whitespace-nowrap hover:text-foreground hover:underline transition-colors">
+              <ContextMenu.Trigger className="keekii-ambient-caption text-be-caption font-medium mt-0.5 block whitespace-nowrap hover:text-foreground hover:underline transition-colors">
                 <ArtistLinks
                   artists={track.artists}
                   className="whitespace-nowrap"

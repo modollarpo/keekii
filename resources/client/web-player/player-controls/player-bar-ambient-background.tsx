@@ -21,9 +21,11 @@ export function PlayerBarAmbientBackground() {
         src={image}
         alt=""
         className={clsx(
-          'absolute inset-0 h-full w-full object-cover blur-[80px] scale-150',
+          'absolute inset-0 h-full w-full object-cover blur-ambient scale-150',
           imageLoaded ? 'opacity-100' : 'opacity-0',
-          'transition-opacity duration-700 ease-in-out'
+          // The fade exists to hide the cover popping in. Under reduced motion
+          // there is nothing decorative about it, so it snaps instead.
+          'transition-opacity duration-700 ease-in-out motion-reduce:transition-none',
         )}
         onLoad={() => setImageLoaded(true)}
       />

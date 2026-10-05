@@ -455,3 +455,30 @@
   width: 100%;
   max-width: var(--be-measure-reading, 48rem);
 }
+
+/* ---------------------------------------------------------------------
+ * 12. Ambient artwork caption
+ *
+ * Text that sits directly on the blurred artwork in the player bar.
+ *
+ * The bar tints itself with the cover behind an 85% scrim, which is
+ * deliberate: the alternative is a second layer of artwork, and 85% already
+ * leaves the cover contributing only a tint. But it costs the muted caption
+ * its contrast, because muted-foreground only clears AA by 0.5 against a flat
+ * surface in the first place. Measured against worst-case artwork (pure white
+ * and pure black covers, both themes, after the scrim):
+ *
+ *   text-muted-foreground   light 3.54:1   dark 3.36:1     fails AA 4.5:1
+ *   foreground at 70%       light 5.56:1   dark 6.67:1     passes
+ *
+ * Raising the scrim instead would have to reach 95.5% to fix the same two
+ * cases, at which point the cover is invisible and the feature is pointless.
+ * So the scrim stays and the caption gives up a little softness instead:
+ * 70% foreground is still clearly quieter than the bold track name above it.
+ *
+ * The full track name is left on foreground, which measures 12.41:1 / 11.84:1
+ * over the same scrim and has ample headroom.
+ * ------------------------------------------------------------------- */
+@utility keekii-ambient-caption {
+  color: color-mix(in oklab, var(--color-foreground) 70%, transparent);
+}

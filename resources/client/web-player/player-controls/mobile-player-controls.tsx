@@ -74,7 +74,7 @@ function QueuedTrack() {
         <div className="overflow-hidden text-be-body font-bold text-ellipsis text-foreground">
           {track.name}
         </div>
-        <div className="text-muted-foreground overflow-hidden text-be-caption font-medium text-ellipsis mt-0.5">
+        <div className="keekii-ambient-caption overflow-hidden text-be-caption font-medium text-ellipsis mt-0.5">
           {track.artists?.map(a => a.name).join(', ')}
         </div>
       </div>
@@ -129,7 +129,7 @@ function MobileNavbar() {
               "flex flex-col items-center gap-xs overflow-hidden text-[11px] whitespace-nowrap transition-colors duration-200 [&_svg:not([class*='size-'])]:size-[22px]",
               isActive 
                 ? 'text-primary font-bold scale-[1.02]' 
-                : 'text-muted-foreground font-medium',
+                : 'keekii-ambient-caption font-medium',
             )
           }
         />
@@ -174,7 +174,7 @@ function AccountButton() {
   }
 
   const trigger = (
-    <Dropdown.Trigger className="relative text-[11px] font-medium text-muted-foreground group-hover:text-foreground transition-colors outline-none">
+    <Dropdown.Trigger className="relative text-[11px] font-medium keekii-ambient-caption group-hover:text-foreground transition-colors outline-none">
       {user?.image ? (
         <img
           src={user.image}
