@@ -27,7 +27,7 @@ export function ChannelHeading({
     if (shouldShowRadio && channel.restriction?.model_type === 'genre') {
       return (
         <div
-          className={clsx('flex items-center justify-between gap-6', margin)}
+          className={clsx('flex items-center justify-between gap-lg', margin)}
         >
           <h1 className="keekii-display flex-auto text-3xl md:text-4xl">
             <Trans message={channel.name} />
@@ -60,7 +60,7 @@ export function ChannelHeading({
   }
 
   return (
-    <div className={clsx('flex items-center justify-between gap-4', margin)}>
+    <div className={clsx('flex items-center justify-between gap-md', margin)}>
       <h2 className="keekii-display text-2xl md:text-3xl">
         <Trans message={channel.name} />
       </h2>

@@ -268,7 +268,7 @@ function PanelTitle({children, to}: PanelTitleProps) {
       {to ? (
         <Link
           to={to}
-          className="flex items-center gap-0.5 hover:text-primary"
+          className="flex items-center gap-xs hover:text-primary"
           onClick={() => {
             const scrollParent = getScrollParent(ref.current);
             if (scrollParent) {

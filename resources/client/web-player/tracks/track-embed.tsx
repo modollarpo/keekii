@@ -49,7 +49,7 @@ function EmbedContent({track, mediaItem}: EmbedContentProps) {
   }, [track]);
   return (
     <PlayerContext id="web-player" options={options}>
-      <div className="flex gap-6">
+      <div className="flex gap-lg">
         <div className="relative h-36 w-36 shrink-0 overflow-hidden rounded bg-black">
           <PlayerPoster className="absolute inset-0" />
           <PlayerOutlet className="h-full w-full" />

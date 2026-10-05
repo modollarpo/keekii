@@ -54,7 +54,7 @@ export function MobileNavbar() {
       <MobileSearchOverlay isOpen={overlayOpen} onClose={closeOverlay} />
 
       {/* ── Persistent header bar ────────────────────────────────────────────── */}
-      <Navbar.Root className="h-13 shrink-0 gap-2.5 border-b bg-background px-3 py-0">
+      <Navbar.Root className="h-13 shrink-0 gap-sm border-b bg-background px-3 py-0">
         {/* Brand ─ shared component so branding + dark mode stay centrally managed */}
         <Navbar.Logo className="max-h-6" logoType="auto" />
 
@@ -64,7 +64,7 @@ export function MobileNavbar() {
           onClick={openOverlay}
           aria-label="Search"
           className={cn(
-            'flex h-10 min-w-0 flex-1 items-center gap-2.5 rounded-full bg-muted px-3.5',
+            'flex h-10 min-w-0 flex-1 items-center gap-sm rounded-full bg-muted px-3.5',
             'text-sm font-medium text-muted-foreground',
             'transition-colors duration-150 hover:bg-muted/80 active:bg-muted/60',
             'focus-visible:outline-2 focus-visible:outline-offset-2',

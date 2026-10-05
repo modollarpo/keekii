@@ -112,9 +112,9 @@ function stationToTrackMeta(s: Station): Track {
     <div className="p-6 md:p-10 max-w-7xl mx-auto">
       <PageMetaTags />
       
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-md mb-8">
         <div>
-          <h1 className="text-3xl keekii-display font-bold flex items-center gap-3">
+          <h1 className="text-3xl keekii-display font-bold flex items-center gap-sm">
             <RadioIcon className="w-8 h-8 text-primary animate-pulse" />
             <Trans message="Live Radio Stations" />
           </h1>
@@ -136,7 +136,7 @@ function stationToTrackMeta(s: Station): Track {
           <Loader2Icon className="w-8 h-8 animate-spin text-primary" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
           {data?.map((station, index) => {
             const isCurrent = cuedMedia?.id === station.id;
             const currentPlaying = isCurrent && isPlaying;
@@ -145,7 +145,7 @@ function stationToTrackMeta(s: Station): Track {
               <div
                 key={station.id}
                 onClick={() => handlePlayStation(station, index)}
-                className={`group relative flex items-center gap-4 p-4 rounded-xl border bg-card hover:bg-accent/50 cursor-pointer transition-all ${
+                className={`group relative flex items-center gap-md p-4 rounded-xl border bg-card hover:bg-accent/50 cursor-pointer transition-all ${
                   isCurrent ? 'border-primary ring-2 ring-primary/20' : 'border-border'
                 }`}
               >

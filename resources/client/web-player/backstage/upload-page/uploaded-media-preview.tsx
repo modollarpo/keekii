@@ -24,7 +24,7 @@ export function UploadedMediaPreview({media}: UploadedMediaPreviewProps) {
     : getTrackLink(media, {absolute: true});
 
   return (
-    <div className="rounded-card bg-card mx-auto my-5 flex w-195 max-w-full items-center gap-7 border p-5">
+    <div className="rounded-card bg-card mx-auto my-5 flex w-195 max-w-full items-center gap-lg border p-5">
       <div className={clsx(isAlbum && 'relative isolate mx-4.5 my-3.5')}>
         {isAlbum ? (
           <AlbumImage
@@ -53,7 +53,7 @@ export function UploadedMediaPreview({media}: UploadedMediaPreviewProps) {
           <ArtistLinks artists={media.artists} />
         </div>
         {media.genres?.length ? (
-          <div className="mb-3.5 flex flex-wrap items-center gap-2">
+          <div className="mb-3.5 flex flex-wrap items-center gap-xs">
             {media.genres.map(genre => (
               <Badge key={genre.id} variant="secondary">
                 {genre.display_name || genre.name}

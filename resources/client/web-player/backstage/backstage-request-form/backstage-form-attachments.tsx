@@ -144,7 +144,7 @@ function AttachmentLayout({
   isDisabled,
 }: AttachmentLayoutProps) {
   return (
-    <div className="mb-2 flex items-center gap-2 rounded border px-3.5 py-2">
+    <div className="mb-2 flex items-center gap-xs rounded border px-3.5 py-2">
       <div className="shrink-0 text-muted-foreground">{icon}</div>
       <div>
         <div className="text-xs text-muted-foreground">{title}</div>

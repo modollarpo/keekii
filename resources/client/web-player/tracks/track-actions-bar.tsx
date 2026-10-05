@@ -35,11 +35,11 @@ export function TrackActionsBar({
   return (
     <div
       className={clsx(
-        '@container flex flex-col items-center justify-center gap-6 overflow-hidden md:flex-row md:justify-between',
+        '@container flex flex-col items-center justify-center gap-lg overflow-hidden md:flex-row md:justify-between',
         className,
       )}
     >
-      <div className="flex flex-wrap items-center gap-y-6">
+      <div className="flex flex-wrap items-center gap-y-lg">
         {children}
         <LikeButton
           size={buttonSize}

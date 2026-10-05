@@ -8,7 +8,7 @@ interface Props {
 }
 export function BackstageInsightsTitle({image, name, description}: Props) {
   return (
-    <div className="flex items-center gap-2.5">
+    <div className="flex items-center gap-sm">
       {cloneElement(image, {
         size: image.props.size ?? 'size-6',
         className: 'rounded',

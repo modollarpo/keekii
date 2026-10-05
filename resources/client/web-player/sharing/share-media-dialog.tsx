@@ -122,7 +122,7 @@ function SharePanel({item}: Pick<Props, 'item'>) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [copied, copyLink] = useClipboard(link, {successDuration: 600});
   return (
-    <div className="flex items-center gap-3.5">
+    <div className="flex items-center gap-sm">
       <MediaImage
         item={item}
         size="w-32 h-32"

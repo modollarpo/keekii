@@ -66,7 +66,7 @@ export function ContextDialogLayout({
 
   const header =
     image || title ? (
-      <div className="mb-2.5 flex items-center gap-3.5 border-b px-3 pt-2 pb-3 text-sm">
+      <div className="mb-2.5 flex items-center gap-sm border-b px-3 pt-2 pb-3 text-sm">
         {image && cloneElement(image, {className: 'size-10 rounded'})}
         <div className="truncate">
           {title}

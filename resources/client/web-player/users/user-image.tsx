@@ -45,7 +45,7 @@ export function UserImage({user, className, size, showProBadge}: Props) {
       )}
       {showBadge && (
         <div
-          className="absolute right-0 bottom-3 left-0 mx-auto flex w-max max-w-full items-center gap-1.5 rounded-full bg-black/60 px-2 py-1 text-sm text-white"
+          className="absolute right-0 bottom-3 left-0 mx-auto flex w-max max-w-full items-center gap-xs rounded-full bg-black/60 px-2 py-1 text-sm text-white"
           color="positive"
         >
           <div className="bg-primary rounded-full p-px">

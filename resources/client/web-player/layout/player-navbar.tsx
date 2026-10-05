@@ -46,7 +46,7 @@ export function PlayerNavbar() {
   }, [primaryArtist, player?.show_become_artist_btn]);
 
   return (
-    <DashboardLayout.Navbar className="gap-2">
+    <DashboardLayout.Navbar className="gap-xs">
       <div
         className={cn(
           'flex h-full items-center',

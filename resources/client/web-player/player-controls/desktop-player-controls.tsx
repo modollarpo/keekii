@@ -48,7 +48,7 @@ function QueuedTrack() {
 
   if (track) {
     content = (
-      <div className="flex items-center gap-3.5 group">
+      <div className="flex items-center gap-sm group">
         <ContextMenu>
           <ContextMenu.Trigger>
             <Link to={getTrackLink(track)} className="shrink-0">

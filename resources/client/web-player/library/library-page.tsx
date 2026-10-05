@@ -41,7 +41,7 @@ export function Component() {
         <Trans message="Your tracks" />
       </StaticPageTitle>
       <AdHost slot="general_top" className="mb-8.5" />
-      <div className="mb-5 flex items-center justify-between gap-6">
+      <div className="mb-5 flex items-center justify-between gap-lg">
         <h1 className="text-2xl font-semibold whitespace-nowrap">
           <Trans message="Your library" />
         </h1>
@@ -126,7 +126,7 @@ interface MenuItemProps {
 }
 function MenuItem({icon, children, to, wrapIcon = true}: MenuItemProps) {
   return (
-    <Link className="mb-4.5 flex items-center gap-3.5 text-sm" to={to}>
+    <Link className="mb-4.5 flex items-center gap-sm text-sm" to={to}>
       {wrapIcon ? (
         <div className="bg-secondary flex size-10.5 items-center justify-center rounded p-2 [&_svg:not([class*='size-'])]:size-4">
           {icon}

@@ -50,7 +50,7 @@ export function BecomeArtistPage() {
             <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
               <Trans message="Join the next generation of independent artists. Upload your music, reach listeners worldwide, and grow your career — all for free." />
             </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-10 flex flex-col items-center justify-center gap-md sm:flex-row">
               <LinkButton
                 color="primary"
                 size="lg"
@@ -160,7 +160,7 @@ export function BecomeArtistPage() {
                 <Trans message="Discover artists featured by our editorial team" />
               </p>
             </div>
-            <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            <div className="mt-12 grid grid-cols-2 gap-md sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
               {spotlightChannel.content.data.slice(0, 5).map((item: any) => (
                 <div
                   key={item.id}

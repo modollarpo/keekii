@@ -93,7 +93,7 @@ function EditProfileDialogContent({
         <Dialog.Body>
           <FileUploadProvider>
             <Field.Group>
-              <div className="flex flex-col items-start gap-7.5 md:flex-row">
+              <div className="flex flex-col items-start gap-lg md:flex-row">
                 <Field.Root name="user.image" className="w-full md:w-50">
                   <Field.Label>
                     <Trans message="Avatar" />
@@ -123,7 +123,7 @@ function EditProfileDialogContent({
                     <Input />
                     <Field.Error />
                   </HookForm.Field>
-                  <div className="flex flex-col gap-5 sm:flex-row">
+                  <div className="flex flex-col gap-md sm:flex-row">
                     <HookForm.Field name="profile.city" className="flex-1">
                       <Field.Label>
                         <Trans message="City" />

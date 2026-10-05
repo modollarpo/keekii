@@ -44,7 +44,7 @@ export function QueueSidenav() {
       width="w-64"
       forceOverlayMode={!!isOverlay}
     >
-      <Sidebar.Header className="border-border/80 flex-row items-center justify-between gap-2.5 border-b py-1.5 pr-1.5 pl-3.5 text-sm font-semibold">
+      <Sidebar.Header className="border-border/80 flex-row items-center justify-between gap-sm border-b py-1.5 pr-1.5 pl-3.5 text-sm font-semibold">
         <Trans message="Queue" />
         <Button
           variant="ghost"
@@ -94,7 +94,7 @@ function QueueItem({media}: QueueItemProps) {
             onPointerEnter={() => setHover(true)}
             onPointerLeave={() => setHover(false)}
             className={clsx(
-              'border-border/80 flex items-center gap-2.5 border-b p-2',
+              'border-border/80 flex items-center gap-sm border-b p-2',
               isCued && 'bg-primary/80 text-white',
               isOffline && !isOfflined && 'pointer-events-none opacity-50',
             )}
@@ -114,7 +114,7 @@ function QueueItem({media}: QueueItemProps) {
           <div className="overflow-hidden text-sm text-ellipsis">
             {media.meta.name}
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-xs">
             <TrackOfflinedIndicator
               trackId={media.meta.id}
               className="text-muted-foreground"

@@ -155,7 +155,7 @@ function ClaimForm({requestType}: ClaimFormProps) {
           </HookForm.Field>
         </Field.Group>
         <BackstageFormAttachments />
-        <div className="flex justify-between gap-6 border-t pt-8.5">
+        <div className="flex justify-between gap-lg border-t pt-8.5">
           <LinkButton
             variant="outline"
             color="white"

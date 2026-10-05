@@ -19,7 +19,7 @@ export function CrupdatePlaylistFields() {
 
   return (
     <Field.Group>
-      <div className="flex flex-col gap-7 md:flex-row">
+      <div className="flex flex-col gap-lg md:flex-row">
         <FileUploadProvider>
           <Field.Root name="image" className="size-35 shrink-0">
             <ImageSelector.Square

@@ -71,6 +71,32 @@ return [
         '--be-font-body' => '1rem',
         '--be-font-caption' => '0.875rem',
 
+        // Spacing scale. Four steps, not the sixteen ad hoc gap-* values the
+        // player was carrying: the usage histogram peaked at 24px with clusters
+        // at 8/12/16px, and everything between those clusters differed by 2-4px,
+        // which is below the threshold of noticing but above the threshold of
+        // costing a decision every time a gap is set.
+        //
+        // These are theme-independent but repeated in both blocks on purpose, so
+        // the two themes stay structurally identical the way --be-font-* and
+        // --be-radius-* already are. Adding a key to one block and not the other
+        // is how the two drift apart.
+        //
+        // Mapped to Tailwind's --spacing-xs/sm/md/lg in common-tailwind.css.
+        // Those four names are deliberately chosen because Tailwind 4's default
+        // theme leaves them undefined (its spacing scale is generated from the
+        // bare --spacing multiplier), so extending them adds gap-xs/gap-sm/etc.
+        // rather than silently redefining a built-in step.
+        //
+        // Deliberately NOT overridden: --spacing itself. That single variable is
+        // the 0.25rem multiplier behind every numeric utility in the app
+        // (gap-6 = 6 x --spacing). Repointing it would reflow the entire
+        // application, not just the player.
+        '--be-space-xs' => '0.5rem',
+        '--be-space-sm' => '0.75rem',
+        '--be-space-md' => '1rem',
+        '--be-space-lg' => '1.5rem',
+
         '--be-card' => 'oklch(1 0 0)',
         '--be-card-foreground' => 'oklch(0.205 0.02 59)',
 
@@ -151,6 +177,15 @@ return [
         '--be-font-subheading' => '1.25rem',
         '--be-font-body' => '1rem',
         '--be-font-caption' => '0.875rem',
+
+        // Spacing scale. Identical to the light theme's, and duplicated for the
+        // same reason: these tokens are structural rather than chromatic, and
+        // keeping both blocks in lockstep means a key added to one cannot be
+        // forgotten in the other.
+        '--be-space-xs' => '0.5rem',
+        '--be-space-sm' => '0.75rem',
+        '--be-space-md' => '1rem',
+        '--be-space-lg' => '1.5rem',
 
         '--be-card' => 'oklch(0.191 0.011 61)',
         '--be-card-foreground' => 'oklch(0.968 0.007 81)',

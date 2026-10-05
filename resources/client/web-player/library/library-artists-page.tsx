@@ -70,7 +70,7 @@ function LibraryArtistsPage() {
           <Trans message="My artists" />
         )}
       </h1>
-      <div className="flex items-center justify-between gap-6">
+      <div className="flex items-center justify-between gap-lg">
         <InputGroup className="max-w-lg flex-auto">
           <InputGroupAddon align="inline-start">
             <SearchIcon />

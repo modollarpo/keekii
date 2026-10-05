@@ -54,7 +54,7 @@ export const TrackListItem = memo(
       <div
         className={clsx(
           'overflow-hidden',
-          !hideArtwork && 'md:flex md:gap-6',
+          !hideArtwork && 'md:flex md:gap-lg',
           className,
         )}
       >
@@ -66,7 +66,7 @@ export const TrackListItem = memo(
           />
         )}
         <div className="min-w-0 flex-auto">
-          <div className="flex items-center gap-3.5">
+          <div className="flex items-center gap-sm">
             <PlaybackToggleButton
               track={track}
               tracks={queue}
@@ -74,7 +74,7 @@ export const TrackListItem = memo(
               equalizerColor="white"
             />
             <div>
-              <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
+              <div className="text-muted-foreground flex items-center gap-xs text-sm">
                 <ArtistLinks
                   artists={track.artists}
                   target={linksInNewTab ? '_blank' : undefined}

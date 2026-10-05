@@ -34,11 +34,11 @@ export function BackstageInsightsLayout({
             <Navbar.AuthContent />
           </Navbar.Content>
         </Navbar.Root>
-        <div className="flex h-14 shrink-0 items-center justify-between gap-2 border-b px-3 md:px-5">
+        <div className="flex h-14 shrink-0 items-center justify-between gap-xs border-b px-3 md:px-5">
           {title ? (
             title
           ) : (
-            <div className="flex min-h-11 w-80 items-center gap-2.5">
+            <div className="flex min-h-11 w-80 items-center gap-sm">
               <Skeleton variant="avatar" className="size-11" />
               <div className="flex-auto">
                 <Skeleton />

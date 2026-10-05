@@ -63,7 +63,7 @@ export const AlbumListItem = memo(
         key={album.id}
         className={clsx(
           'overflow-hidden',
-          !hideArtwork && 'md:flex md:gap-6',
+          !hideArtwork && 'md:flex md:gap-lg',
           className,
           maxHeight,
         )}
@@ -82,7 +82,7 @@ export const AlbumListItem = memo(
           )}
         >
           <div className="shrink-0">
-            <div className="flex items-center gap-3.5">
+            <div className="flex items-center gap-sm">
               <PlaybackToggleButton
                 queueId={queueId}
                 track={activeTrack}
@@ -91,7 +91,7 @@ export const AlbumListItem = memo(
                 equalizerColor="white"
               />
               <div>
-                <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
+                <div className="text-muted-foreground flex items-center gap-xs text-sm">
                   <ArtistLinks
                     artists={album.artists}
                     target={linksInNewTab ? '_blank' : undefined}
@@ -182,7 +182,7 @@ function TrackItem({track, index, isLast, isActive, album}: TrackItemProps) {
     <div
       key={track.id}
       className={clsx(
-        'hover:bg-accent flex cursor-pointer items-center gap-2 p-2 text-[13px]',
+        'hover:bg-accent flex cursor-pointer items-center gap-xs p-2 text-[13px]',
         !isLast && 'border-b',
         isActive && 'text-primary',
       )}

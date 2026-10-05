@@ -22,7 +22,7 @@ export function ProfileDescription({profile, links}: Props) {
         />
       )}
       {profile.city || profile.country || links?.length ? (
-        <div className="mt-3 flex items-center justify-between gap-6">
+        <div className="mt-3 flex items-center justify-between gap-lg">
           {(profile.city || profile.country) && (
             <div className="md:w-max">
               {profile.city}

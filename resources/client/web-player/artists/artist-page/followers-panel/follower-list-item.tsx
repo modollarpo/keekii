@@ -11,7 +11,7 @@ export function FollowerListItem({follower}: Props) {
   return (
     <div
       key={follower.id}
-      className="mb-4 flex items-center gap-4 border-b pb-4"
+      className="mb-4 flex items-center gap-md border-b pb-4"
     >
       <UserImage user={follower} className="h-16 w-16 rounded" />
       <div className="text-sm">

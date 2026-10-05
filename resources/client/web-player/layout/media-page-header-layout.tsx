@@ -25,7 +25,7 @@ export function MediaPageHeaderLayout({
     <div>
       <header
         className={clsx(
-          'flex flex-col gap-6 md:flex-row md:gap-8.5',
+          'flex flex-col gap-lg md:flex-row md:gap-8.5',
           centerItems && 'md:items-center',
           className,
         )}

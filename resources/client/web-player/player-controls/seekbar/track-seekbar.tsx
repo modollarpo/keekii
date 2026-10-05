@@ -13,7 +13,7 @@ export function TrackSeekbar({track, queue, className}: TrackSeekbarProps) {
   const {duration, ...sliderProps} = useTrackSeekbar(track, queue);
 
   return (
-    <div className={clsx('flex items-center gap-3', className)}>
+    <div className={clsx('flex items-center gap-sm', className)}>
       <div className="text-muted-foreground min-w-10 shrink-0 text-right text-xs">
         {sliderProps.value ? (
           <FormattedDuration seconds={sliderProps.value} />

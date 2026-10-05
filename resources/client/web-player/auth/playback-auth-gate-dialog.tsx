@@ -98,7 +98,7 @@ export function PlaybackAuthGateDialog() {
 
           <Dialog.Body>
             {registrationEnabled && (
-              <div className="bg-muted mb-5 grid grid-cols-2 gap-1 rounded-full p-1 text-sm font-medium">
+              <div className="bg-muted mb-5 grid grid-cols-2 gap-xs rounded-full p-1 text-sm font-medium">
                 <button
                   type="button"
                   onClick={() => playbackAuthGateState.setMode('register')}
@@ -245,7 +245,7 @@ function LoginForm() {
         </HookForm.Field>
 
         <HookForm.Field name="password">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-between gap-md">
             <Field.Label>
               <Trans message="Password" />
             </Field.Label>

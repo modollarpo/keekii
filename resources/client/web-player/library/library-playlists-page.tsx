@@ -75,7 +75,7 @@ function LibraryPlaylistsPage() {
         <Trans message="Your playlists" />
       </StaticPageTitle>
       <AdHost slot="general_top" className="mb-8.5" />
-      <div className="mb-5 flex items-center justify-between gap-6">
+      <div className="mb-5 flex items-center justify-between gap-lg">
         <h1 className="text-2xl font-semibold whitespace-nowrap">
           {totalItems ? (
             <Trans
@@ -105,7 +105,7 @@ function LibraryPlaylistsPage() {
         </CreatePlaylistDialog>
       </div>
 
-      <div className="flex items-center justify-between gap-6">
+      <div className="flex items-center justify-between gap-lg">
         <InputGroup className="max-w-lg flex-auto">
           <InputGroupAddon align="inline-start">
             <SearchIcon />

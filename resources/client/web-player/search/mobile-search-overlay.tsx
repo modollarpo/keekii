@@ -212,10 +212,10 @@ export function MobileSearchOverlay({isOpen, onClose}: MobileSearchOverlayProps)
       )}
     >
       {/* ── Top bar ─────────────────────────────────────────────────────────── */}
-      <div className="flex items-center gap-3 px-4 pt-4 pb-3 border-b border-border shrink-0">
+      <div className="flex items-center gap-sm px-4 pt-4 pb-3 border-b border-border shrink-0">
         {/* Search input */}
         <form
-          className="flex flex-1 items-center gap-3 h-12 rounded-2xl bg-muted px-4 focus-within:ring-2 focus-within:ring-primary/50 transition-shadow"
+          className="flex flex-1 items-center gap-sm h-12 rounded-2xl bg-muted px-4 focus-within:ring-2 focus-within:ring-primary/50 transition-shadow"
           onSubmit={e => {
             e.preventDefault();
             submit(query);
@@ -323,7 +323,7 @@ export function MobileSearchOverlay({isOpen, onClose}: MobileSearchOverlayProps)
             {voiceSearch.isSupported && (
               <button
                 type="button"
-                className="mt-6 flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all active:scale-95 bg-primary text-primary-foreground shadow-md"
+                className="mt-6 flex items-center gap-xs rounded-full px-5 py-2.5 text-sm font-medium transition-all active:scale-95 bg-primary text-primary-foreground shadow-md"
                 onClick={voiceSearch.toggle}
               >
                 <MicIcon className="size-4" />
@@ -356,7 +356,7 @@ export function MobileSearchOverlay({isOpen, onClose}: MobileSearchOverlayProps)
         {!isFetching && hasResults && query.trim().length > 0 && (
           <button
             type="button"
-            className="w-full flex items-center justify-center gap-2 py-4 text-sm font-semibold text-primary hover:bg-muted/50 transition-colors border-t border-border"
+            className="w-full flex items-center justify-center gap-xs py-4 text-sm font-semibold text-primary hover:bg-muted/50 transition-colors border-t border-border"
             onClick={() => submit(query)}
           >
             See all results for &ldquo;{query}&rdquo;
@@ -384,7 +384,7 @@ function ResultRow({result, onSelect}: ResultRowProps) {
     <li role="option" aria-selected="false">
       <button
         type="button"
-        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/60 active:bg-muted transition-colors text-left"
+        className="w-full flex items-center gap-sm px-4 py-3 hover:bg-muted/60 active:bg-muted transition-colors text-left"
         onClick={() => onSelect(result)}
       >
         {/* Media thumbnail */}

@@ -55,7 +55,7 @@ function EmbedContent({album, mediaItems}: EmbedContentProps) {
   }, [album]);
   return (
     <PlayerContext id="web-player" options={options}>
-      <div className="flex h-full items-start gap-6">
+      <div className="flex h-full items-start gap-lg">
         <div className="relative h-36 w-36 shrink-0 overflow-hidden rounded bg-black">
           <PlayerPoster className="absolute inset-0" />
           <PlayerOutlet className="h-full w-full" />

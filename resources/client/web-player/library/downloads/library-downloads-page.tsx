@@ -16,7 +16,7 @@ export function Component() {
         <Trans message="Downloads - Library" />
       </StaticPageTitle>
       <AdHost slot="general_top" className="mb-8.5" />
-      <div className="flex items-center justify-between gap-6">
+      <div className="flex items-center justify-between gap-lg">
         <h1 className="w-max text-2xl font-semibold whitespace-nowrap md:w-full">
           <Trans message="Downloads" />
         </h1>

@@ -16,7 +16,7 @@ export function MediaItemStats({item, className, showPlays = true}: Props) {
   return (
     <div
       className={clsx(
-        'text-muted-foreground flex items-center gap-5 text-sm',
+        'text-muted-foreground flex items-center gap-md text-sm',
         className,
       )}
     >

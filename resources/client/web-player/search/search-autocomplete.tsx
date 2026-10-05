@@ -434,7 +434,7 @@ function SearchResultItemRow({
         >
           {media}
         </Item.Media>
-        <Item.Content className="gap-0.5">
+        <Item.Content className="gap-xs">
           <Item.Title>{title}</Item.Title>
           {description ? (
             <Item.Description>{description}</Item.Description>

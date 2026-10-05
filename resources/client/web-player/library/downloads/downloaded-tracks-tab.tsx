@@ -85,7 +85,7 @@ export function Component() {
 
   return (
     <div className="mt-6">
-      <div className="mb-6 flex items-center justify-between gap-6">
+      <div className="mb-6 flex items-center justify-between gap-lg">
         <PlaybackToggleButton
           queueId={queueId}
           buttonType="text"

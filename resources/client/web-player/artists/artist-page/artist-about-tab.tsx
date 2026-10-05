@@ -19,7 +19,7 @@ export function ArtistAboutTab({artist}: ArtistAboutTabProps) {
 
   return (
     <div className="">
-      <div className="grid grid-cols-3 gap-6 lg:grid-cols-4">
+      <div className="grid grid-cols-3 gap-lg lg:grid-cols-4">
         {images.map((src, index) => (
           <ImageZoomDialog
             key={src}

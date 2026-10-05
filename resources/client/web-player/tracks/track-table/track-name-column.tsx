@@ -14,7 +14,7 @@ export function TrackNameColumn({track}: TrackNameColumnProps) {
   const isCued = useIsTrackCued(track.id, queueGroupId);
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-sm">
       {!hideTrackImage && (
         <TrackImage
           className="rounded-card-xs size-10 shrink-0 object-cover"
@@ -31,7 +31,7 @@ export function TrackNameColumn({track}: TrackNameColumnProps) {
         >
           {track.name}
         </div>
-        <div className="text-muted-foreground flex items-center gap-1 text-sm">
+        <div className="text-muted-foreground flex items-center gap-xs text-sm">
           <TrackOfflinedIndicator trackId={track.id} />
           {track.artists?.length ? (
             <div className="overflow-hidden text-sm text-ellipsis">
@@ -47,7 +47,7 @@ export function TrackNameColumn({track}: TrackNameColumnProps) {
 export function TrackNameColumnPlaceholder() {
   const {hideTrackImage} = useTrackTableMeta();
   return (
-    <div className="flex w-64 items-center gap-3">
+    <div className="flex w-64 items-center gap-sm">
       {!hideTrackImage && (
         <Skeleton className="rounded-card-xs size-10 shrink-0" variant="rect" />
       )}

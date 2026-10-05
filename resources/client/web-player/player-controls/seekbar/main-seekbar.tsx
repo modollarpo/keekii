@@ -6,7 +6,7 @@ import {Fragment} from 'react';
 export function MainSeekbar() {
   return (
     <Fragment>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-sm">
         <div className="text-[var(--be-brand-ink)] min-w-10 shrink-0 text-right text-xs">
           <FormattedCurrentTime />
         </div>

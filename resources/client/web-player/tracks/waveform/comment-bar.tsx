@@ -115,7 +115,7 @@ interface CommentPopoverProps {
 }
 function CommentPopover({comment}: CommentPopoverProps) {
   return (
-    <div className="flex items-center gap-2.5">
+    <div className="flex items-center gap-sm">
       {comment.user && (
         <div className="text-primary">{comment.user.name}</div>
       )}

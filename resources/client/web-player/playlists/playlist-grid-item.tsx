@@ -23,7 +23,7 @@ export function PlaylistGridItem({playlist, layout}: PlaylistGridItemProps) {
       image={<PlaylistImage playlist={playlist} />}
       title={<PlaylistLink playlist={playlist} />}
       subtitle={
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-xs">
           <PlaylistOfflinedIndicator playlistId={playlist.id} />
           <PlaylistOwnerName playlist={playlist} />
         </div>

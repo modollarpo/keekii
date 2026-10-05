@@ -80,7 +80,7 @@ function AlbumPageLayout({data}: AlbumPageLayoutProps) {
           ) : null}
         </CommentBarContextProvider>
         {data.album.tags?.length ? (
-          <div className="mb-4 flex flex-wrap items-center gap-2">
+          <div className="mb-4 flex flex-wrap items-center gap-xs">
             {data.album.tags.map(tag => (
               <Badge
                 key={tag.id}

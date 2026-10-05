@@ -27,7 +27,7 @@ function PlaybackButtons() {
   return (
     <div
       className={cn(
-        'flex items-center justify-center gap-1.5',
+        'flex items-center justify-center gap-xs',
         isMobile && 'mb-5',
       )}
     >

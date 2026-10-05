@@ -48,7 +48,7 @@ function PlayerControls() {
 
   return (
     <div
-      className="relative flex items-center justify-between gap-6 px-3 py-2 transition-colors active:bg-foreground/5"
+      className="relative flex items-center justify-between gap-lg px-3 py-2 transition-colors active:bg-foreground/5"
       onClick={() => {
         playerOverlayState.toggle();
       }}
@@ -68,7 +68,7 @@ function QueuedTrack() {
   }
 
   return (
-    <div className="flex min-w-0 flex-auto items-center gap-2.5 group">
+    <div className="flex min-w-0 flex-auto items-center gap-sm group">
       <TrackImage className="h-9 w-9 rounded object-cover shadow-sm transition-all duration-300 ease-out group-active:scale-95 group-active:brightness-90" track={track} />
       <div className="flex-auto overflow-hidden whitespace-nowrap flex flex-col justify-center">
         <div className="overflow-hidden text-be-body font-bold text-ellipsis text-foreground">
@@ -118,7 +118,7 @@ function MobileNavbar() {
   if (!menu) return null;
 
   return (
-    <div className="flex items-center justify-between gap-6 px-[max(8%,20px)] pt-3 pb-3">
+    <div className="flex items-center justify-between gap-lg px-[max(8%,20px)] pt-3 pb-3">
       {menu.items.map(item => (
         <UnstyledCustomMenuItem
           key={item.id}
@@ -126,7 +126,7 @@ function MobileNavbar() {
           defaultIcons={webPlayerSidebarIcons}
           className={({isActive}) =>
             cn(
-              "flex flex-col items-center gap-1 overflow-hidden text-[11px] whitespace-nowrap transition-colors duration-200 [&_svg:not([class*='size-'])]:size-[22px]",
+              "flex flex-col items-center gap-xs overflow-hidden text-[11px] whitespace-nowrap transition-colors duration-200 [&_svg:not([class*='size-'])]:size-[22px]",
               isActive 
                 ? 'text-primary font-bold scale-[1.02]' 
                 : 'text-muted-foreground font-medium',

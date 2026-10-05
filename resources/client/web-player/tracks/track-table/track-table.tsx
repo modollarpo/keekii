@@ -389,7 +389,7 @@ export function TrackTable({
               <div role="rowgroup">
                 <div
                   role="row"
-                  className="flex items-center gap-3 border-b px-3 hover:bg-transparent"
+                  className="flex items-center gap-sm border-b px-3 hover:bg-transparent"
                 >
                   {filteredColumns.map((column, index) => (
                     <TrackTableHeaderCell
@@ -633,7 +633,7 @@ export function TrackTableRow({
     tabIndex: -1,
     selected: isSelected,
     className: cn(
-      'flex cursor-pointer items-center border-b border-transparent transition-all gap-3 rounded-md',
+      'flex cursor-pointer items-center border-b border-transparent transition-all gap-sm rounded-md',
       !isMobile && 'px-3',
       isSelected && 'bg-accent hover:bg-accent',
       !isSelected && 'hover:bg-accent focus-visible:bg-muted/50 hover:scale-[1.02] active:scale-[0.98]',

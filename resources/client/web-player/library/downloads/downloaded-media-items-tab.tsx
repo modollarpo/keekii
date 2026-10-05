@@ -104,7 +104,7 @@ export function DownloadedMediaItemsTab({
 
   return (
     <div className="mt-8.5">
-      <div className="flex items-center justify-between gap-6">
+      <div className="flex items-center justify-between gap-lg">
         <InputGroup className="max-w-lg flex-auto">
           <InputGroupAddon align="inline-start">
             <SearchIcon />

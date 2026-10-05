@@ -20,7 +20,7 @@ export function TrackGridItem({track, newQueue, layout}: TrackGridItemProps) {
       image={<TrackImage track={track} />}
       title={<TrackLink track={track} />}
       subtitle={
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-xs">
           <TrackOfflinedIndicator trackId={track.id} />
           <ArtistLinks artists={track.artists} />
         </div>

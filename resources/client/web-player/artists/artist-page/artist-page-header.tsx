@@ -42,7 +42,7 @@ export function ArtistPageHeader({artist}: ArtistPageHeaderProps) {
           artist.genres?.length ? <GenreList genres={artist.genres} /> : null
         }
         actionsBar={
-          <div className="flex flex-col items-center justify-center gap-6 md:flex-row md:justify-between">
+          <div className="flex flex-col items-center justify-center gap-lg md:flex-row md:justify-between">
             <ActionButtons artist={artist} />
             <MediaItemStats item={artist} />
           </div>
@@ -69,7 +69,7 @@ export function GenreList({genres, className}: GenreListProps) {
   return (
     <div
       className={cn(
-        'flex max-w-155 items-center justify-start gap-2 overflow-hidden max-md:hidden',
+        'flex max-w-155 items-center justify-start gap-xs overflow-hidden max-md:hidden',
         className,
       )}
     >

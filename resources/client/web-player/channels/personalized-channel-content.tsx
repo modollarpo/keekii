@@ -134,7 +134,7 @@ function PersonalizedSkeleton() {
   return (
     <div className="py-4">
       <Skeleton variant="rect" className="mb-4 h-7 w-48 rounded" />
-      <div className="flex gap-4 overflow-hidden">
+      <div className="flex gap-md overflow-hidden">
         {Array.from({length: 6}).map((_, i) => (
           <Skeleton
             key={i}

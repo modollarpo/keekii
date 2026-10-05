@@ -76,7 +76,7 @@ function AlbumTrackTable({album, track}: AlbumTrackTableProps) {
     useSortableTableData(albumsTracks);
   return (
     <div className="mt-11">
-      <div className="bg-secondary/70 rounded-card mb-3.5 flex items-center gap-4 overflow-hidden">
+      <div className="bg-secondary/70 rounded-card mb-3.5 flex items-center gap-md overflow-hidden">
         <AlbumImage
           album={album}
           className="shrink-0 rounded"
@@ -204,7 +204,7 @@ function TrackPageLayout({data}: {data: GetTrackResponse}) {
           ) : null}
         </CommentBarContextProvider>
         {data.track.tags?.length ? (
-          <div className="mb-4 flex flex-wrap items-center gap-2">
+          <div className="mb-4 flex flex-wrap items-center gap-xs">
             {data.track.tags.map(tag => (
               <Badge
                 key={tag.id}

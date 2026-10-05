@@ -12,7 +12,7 @@ export function BulletSeparatedItems({
 }: BulletSeparatedItemsProps) {
   const items = Children.toArray(children);
   return (
-    <div className={clsx('flex items-center gap-1', className)}>
+    <div className={clsx('flex items-center gap-xs', className)}>
       {items.map((child, index) => (
         <Fragment key={index}>
           <div>{child}</div>

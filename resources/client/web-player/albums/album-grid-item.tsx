@@ -19,7 +19,7 @@ export function AlbumGridItem({album, layout}: AlbumGridItemProps) {
       image={<AlbumImage album={album} />}
       title={<AlbumLink album={album} />}
       subtitle={
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-xs">
           <AlbumOfflinedIndicator albumId={album.id} />
           <ArtistLinks artists={album.artists} />
         </div>

@@ -63,7 +63,7 @@ function DefaultGridItem({
           />
           <div
             className={clsx(
-              'absolute bottom-0 left-0 z-30 flex w-full items-center gap-3.5 p-3',
+              'absolute bottom-0 left-0 z-30 flex w-full items-center gap-sm p-3',
               radius === 'rounded-full' &&
                 'pointer-events-none top-0 right-0 justify-center',
             )}
@@ -144,7 +144,7 @@ function CompactGridItem({
   const itemIsPlaying = isPlaying && itemIsQueued;
 
   return (
-    <div className="flex snap-start snap-normal items-center gap-4 border-t py-2.5">
+    <div className="flex snap-start snap-normal items-center gap-md border-t py-2.5">
       <div
         className={`group relative h-10.5 w-10.5 shrink-0 cursor-pointer overflow-hidden rounded-md hover:scale-[1.02] active:scale-[0.98] transition-transform`}
         onPointerEnter={() => setIsHover(true)}
