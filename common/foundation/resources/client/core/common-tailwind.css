@@ -63,17 +63,17 @@ html.dark {
   --radius-card-xs: var(--be-radius-card-xs, var(--radius-xl));
 
   /* Spacing scale (workstream A). Gives the app four named rhythm steps:
-     gap-xs/sm/md/lg and the matching p-*, m-*, space-*. The fallbacks repeat
-     the literal values so a theme row that predates these keys — an older
-     css_themes row, or a theme that has not been through ops/sync-settings.php
-     — still lays out correctly instead of collapsing gap to 0.
-     Note this extends the spacing scale rather than redefining it: the bare
-     --spacing multiplier is left alone, so every numeric utility (gap-6, p-4,
-     w-32, ...) keeps its current meaning. */
-  --spacing-xs: var(--be-space-xs, 0.5rem);
-  --spacing-sm: var(--be-space-sm, 0.75rem);
-  --spacing-md: var(--be-space-md, 1rem);
-  --spacing-lg: var(--be-space-lg, 1.5rem);
+     gap-xs/sm/md/lg and the matching p-*, m-*, space-*. They are declared as
+     @utility rules further down rather than as --spacing-* keys, on purpose:
+     Tailwind resolves max-w-* through the spacing scale, so naming them
+     --spacing-sm (etc.) re-points the pre-existing max-w-xs/sm/md/lg
+     utilities away from the container scale (20/24/28/32rem) and onto these
+     rhythm steps, collapsing every max-w-sm from 24rem to 0.75rem. Keeping
+     them out of --spacing-* means they never occupy a namespace that max-w-*
+     or w-* also reads.
+
+     Numeric utilities (gap-6, p-4, w-32, ...) are unaffected either way: they
+     read the bare --spacing multiplier, which is still left untouched. */
 
   --color-sidebar: var(--be-sidebar);
   --color-sidebar-accent: --alpha(
@@ -141,6 +141,27 @@ html.dark {
 
 @utility bg {
   background-color: var(--be-background);
+}
+
+/* Named rhythm steps, kept off the --spacing-* scale on purpose (see the note
+   in @theme). The fallbacks repeat the literal values so a theme row that
+   predates these keys — an older css_themes row, or a theme that has not been
+   through ops/sync-settings.php — still lays out correctly instead of
+   collapsing gap to 0. */
+@utility gap-xs {
+  gap: var(--be-space-xs, 0.5rem);
+}
+
+@utility gap-sm {
+  gap: var(--be-space-sm, 0.75rem);
+}
+
+@utility gap-md {
+  gap: var(--be-space-md, 1rem);
+}
+
+@utility gap-lg {
+  gap: var(--be-space-lg, 1.5rem);
 }
 
 @utility bg-lighten-* {
