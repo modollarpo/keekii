@@ -14,6 +14,16 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      # A UTF-8 BOM is invisible in HTML but PHP echoes the raw bytes of a
+      # required file before any code in it runs, so a BOM in a config file
+      # required during provider registration is prepended to every response
+      # body. Text pages shrug it off; /api/v1/img-proxy returns image/jpeg and
+      # the displaced JPEG SOI marker makes every cover image undecodable.
+      # The install step below rsyncs this tree over the app, so fail the
+      # deploy here rather than shipping it.
+      - name: Guard against UTF-8 BOM in source files
+        run: node scripts/check-no-bom.mjs
+
       # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
