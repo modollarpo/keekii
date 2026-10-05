@@ -389,6 +389,33 @@
     :focus-visible {
       outline-width: 3px;
     }
+
+    /* Zeroing the tokens above only reached elements that opted into
+       keekii-interactive and keekii-enter. Tailwind's own transition-* and
+       animate-* utilities do not read those tokens, which left every one of
+       the 19 animate-spin / animate-pulse / animate-ping loops in the app
+       still running -- including the two 24s and 3s decorative spins on the
+       landing page, which are exactly the kind of sustained movement that
+       triggers vestibular symptoms.
+
+       Neutralise them at the root instead of auditing call sites one by one,
+       so a future animation inherits the preference automatically.
+
+       1ms rather than none: the end state still has to render, otherwise a
+       loading spinner or a skeleton freezes at opacity 0 and the page looks
+       broken rather than still-busy. Iteration count 1 stops the loop.
+
+       !important is load-bearing. These declarations live in @layer base,
+       and in the cascade !important reverses layer precedence, so this wins
+       against any utility-level animation without needing to touch them. */
+    *,
+    *::before,
+    *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 

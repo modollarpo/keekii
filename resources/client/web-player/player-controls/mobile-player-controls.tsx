@@ -88,7 +88,7 @@ function PlaybackButtons() {
       <PreviousButton stopPropagation />
       <div className="relative isolate">
         <BufferingIndicator />
-        <PlayButton className="text-[var(--be-brand-ink)] hover:scale-105 active:scale-95 transition-transform" iconClassName="size-8" stopPropagation size="icon-lg" />
+        <PlayButton className="text-[var(--be-brand-ink)] hover:scale-105 active:scale-95 keekii-interactive" iconClassName="size-8" stopPropagation size="icon-lg" />
       </div>
       <NextButton stopPropagation />
     </div>

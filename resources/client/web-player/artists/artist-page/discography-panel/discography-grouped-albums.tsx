@@ -48,7 +48,7 @@ function AlbumsCarousel({albums, albumType}: AlbumsCarouselProps) {
 
   return (
     <div className="mb-11">
-      {/* Header line: section name left, "View all" right. */}
+      {/* Header line: section name left, "See all" right. */}
       <div className="mb-2.5 flex items-center">
         <ArtistPageSubtitle margin="m-0">
           <AlbumTypeDisplayName albumType={albumType} />
@@ -60,7 +60,7 @@ function AlbumsCarousel({albums, albumType}: AlbumsCarouselProps) {
             className="ml-auto"
             to={`${getArtistLink(artistQuery.data.artist, {absolute: true})}/albums?recordType=${albumType}`}
           >
-            <Trans message="View all" />
+            <Trans message="See all" />
           </LinkButton>
         ) : null}
       </div>

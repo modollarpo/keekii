@@ -76,7 +76,7 @@ function NestedChannelLink({channel}: ChannelLinkProps) {
   const {restriction: genreName} = useParams();
   return (
     <Link
-      className="text-sm font-semibold text-muted-foreground hover:text-foreground outline-hidden focus-visible:underline flex items-center"
+      className="text-sm font-semibold text-muted-foreground hover:text-foreground focus-visible:underline flex items-center"
       to={
         channel.config.restriction === 'genre' && genreName
           ? `/${channel.slug}/${genreName}`
