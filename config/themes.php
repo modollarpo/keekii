@@ -122,6 +122,16 @@ return [
         // focus rings. It is safe on the dark background at 7.61:1.
         '--be-brand-ink-alt' => '#f0864a',
 
+        // The one brand step that is allowed to sit *behind* light text.
+        // #e8611f only reaches 3.41:1 under white, so a filled badge in the
+        // brand orange with white numerals fails AA -- and at the 9px badge
+        // sizes we use, antialiasing eats most of what little margin is left.
+        // #a8460c is the same hue taken down to where white clears 5.92:1. It
+        // measures 5.79:1 against the light background too, so it is safe as a
+        // graphic as well as a fill. Use it for filled chips and badges; use
+        // --be-primary for accent-coloured text.
+        '--be-brand-ink-strong' => '#a8460c',
+
         // Monochrome means monochrome: the accent is a deeper, redder step of
         // the same ember hue, not the violet counterweight this theme used to
         // carry. It carries hover/active emphasis and small highlights.
@@ -206,6 +216,9 @@ return [
         // graphic-vs-text split is documented in the light theme above.
         '--be-brand-ink' => '#e8611f',
         '--be-brand-ink-alt' => '#f0864a',
+        // Same value as the light theme: white on it clears 5.92:1 on this
+        // background too, so the filled-badge rule carries over unchanged.
+        '--be-brand-ink-strong' => '#a8460c',
 
         '--be-accent' => 'oklch(0.6 0.129 45)',
         '--be-accent-foreground' => 'oklch(0.159 0.012 61)',

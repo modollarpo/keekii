@@ -81,7 +81,7 @@ export function SleepTimerButton() {
       >
         <Timer className="size-5" />
         {isActive && remaining !== null && (
-          <span className="absolute -top-1 -right-1 rounded-full bg-[var(--be-brand-ink)] px-1 py-px text-[9px] font-bold leading-none text-white tabular-nums">
+          <span className="absolute -top-1 -right-1 rounded-full bg-[var(--be-brand-ink-strong)] px-1 py-px text-[9px] font-bold leading-none text-white tabular-nums">
             {formatRemaining(remaining)}
           </span>
         )}
