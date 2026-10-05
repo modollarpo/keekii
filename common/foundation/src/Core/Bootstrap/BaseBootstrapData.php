@@ -87,6 +87,8 @@ class BaseBootstrapData implements BootstrapData
         // only used on landing page and will be fetched landing page data loader
         unset($this->data['settings']['landingPage']);
 
+        $this->stripAdsForSubscribers();
+
         return $this;
     }
 
@@ -189,6 +191,41 @@ class BaseBootstrapData implements BootstrapData
         }
 
         return $user ? new UserResource($user) : null;
+    }
+
+    /**
+     * Premium accounts never receive ad markup.
+     *
+     * AdHost already skips rendering for subscribers, but that check is a
+     * client-side React early-return: without this the full ad code for every
+     * slot is inlined in bootstrapData and readable by anyone who opens the
+     * page source, which would make the promise on about-ads-page.tsx that
+     * suppression happens "on the server" false.
+     *
+     * Only the ad code is removed. The `disable` flag is left intact because it
+     * is not ad content and other code paths read it.
+     */
+    protected function stripAdsForSubscribers(): void
+    {
+        $user = request()->user();
+
+        if (!$user || !settings('billing.enable')) {
+            return;
+        }
+
+        $ads = $this->data['settings']['ads'] ?? null;
+
+        if (!is_array($ads)) {
+            return;
+        }
+
+        foreach (array_keys($ads) as $key) {
+            if ($key !== 'disable') {
+                $ads[$key] = '';
+            }
+        }
+
+        $this->data['settings']['ads'] = $ads;
     }
 
     protected function getAuthRedirectUri(): string
