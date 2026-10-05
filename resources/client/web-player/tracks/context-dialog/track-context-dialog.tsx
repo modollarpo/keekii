@@ -19,6 +19,7 @@ import {ShareMediaButton} from '@app/web-player/context-dialog/share-media-butto
 import {ToggleInLibraryMenuButton} from '@app/web-player/context-dialog/toggle-in-library-menu-button';
 import {ToggleRepostMenuButton} from '@app/web-player/context-dialog/toggle-repost-menu-button';
 import {getRadioLink} from '@app/web-player/radio/get-radio-link';
+import {useDownloadEntitlement} from '@app/web-player/player-controls/use-download-entitlement';
 import {useShouldShowRadioButton} from '@app/web-player/tracks/context-dialog/use-should-show-radio-button';
 import {useTrackPermissions} from '@app/web-player/tracks/hooks/use-track-permissions';
 import {useDeleteTracks} from '@app/web-player/tracks/requests/use-delete-tracks';
@@ -27,7 +28,6 @@ import {TrackImage} from '@app/web-player/tracks/track-image/track-image';
 import {getTrackLink, TrackLink} from '@app/web-player/tracks/track-link';
 import {trackIsLocallyUploaded} from '@app/web-player/tracks/utils/track-is-locally-uploaded';
 import {trackToMediaItem} from '@app/web-player/tracks/utils/track-to-media-item';
-import {useAuth} from '@common/auth/use-auth';
 import {usePlayerActions} from '@common/player/hooks/use-player-actions';
 import {usePlayerStore} from '@common/player/hooks/use-player-store';
 import {useNavigate} from '@common/ui/navigation/use-navigate';
@@ -38,17 +38,19 @@ import {useIsMobileMediaQuery} from '@ui/utils/hooks/is-mobile-media-query';
 import {
   ChartNoAxesColumnIcon,
   CloudOffIcon,
-  Disc3Icon,
-  DownloadIcon,
-  HardDriveDownloadIcon,
-  MicVocalIcon,
-  MusicIcon,
-  PencilIcon,
-  RadioIcon,
-  TextIcon,
-  Trash2Icon,
-} from 'lucide-react';
-import {Fragment, ReactNode, useCallback, useState} from 'react';
+Disc3Icon,
+    DownloadIcon,
+    HardDriveDownloadIcon,
+    LockIcon,
+    MicVocalIcon,
+    MusicIcon,
+    PencilIcon,
+    RadioIcon,
+    TextIcon,
+    Trash2Icon,
+  } from 'lucide-react';
+  import {Fragment, ReactNode, useCallback, useState} from 'react';
+  import {Link} from 'react-router';
 
 export interface TrackContextDialogProps {
   tracks: Track[];
@@ -241,15 +243,27 @@ interface DownloadTrackButtonProps {
   track: Track;
 }
 function DownloadTrackButton({track}: DownloadTrackButtonProps) {
-  const {player, base_url} = useSettings();
-  const {hasPermission} = useAuth();
+  const {base_url} = useSettings();
+  const {canDownload, shouldPromptUpgrade} = useDownloadEntitlement();
 
-  if (
-    !player?.enable_download ||
-    !track ||
-    !trackIsLocallyUploaded(track) ||
-    !hasPermission('music.download')
-  ) {
+  if (!track || !trackIsLocallyUploaded(track)) {
+    return null;
+  }
+
+  // Same entitlement shape as the player control, so a listener without the
+  // permission is offered the upgrade rather than being given a control that
+  // hits a 403.
+  if (shouldPromptUpgrade) {
+    return (
+      <Link to="/pricing">
+        <ContextMenuButton startIcon={<LockIcon />}>
+          <Trans message="Upgrade to download" />
+        </ContextMenuButton>
+      </Link>
+    );
+  }
+
+  if (!canDownload) {
     return null;
   }
 
