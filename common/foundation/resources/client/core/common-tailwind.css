@@ -123,8 +123,8 @@ html.dark {
 }
 
 @theme {
-  --color-positive: oklch(0.7227 0.192 149.58);
-  --color-warning: oklch(0.7785 0.152 70.88);
+  --color-positive: oklch(0.58 0.192 149.58);
+  --color-warning: oklch(0.62 0.152 70.88);
   --color-note: oklch(0.9619 0.058 95.62);
   --color-google: oklch(0.5929 0.1781 30.43);
   --color-facebook: oklch(0.4724 0.1083 263.58);
