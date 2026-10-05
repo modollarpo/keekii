@@ -42,7 +42,7 @@ type ToastPositionVariantProps = {
 const defaultPosition: ToastPosition = 'bottom-center';
 
 const viewportVariants = cva(
-  'fixed isolate z-100 flex w-sm max-w-[calc(100vw-2rem)] items-center',
+  'fixed isolate z-100 flex max-w-[calc(100vw-2rem)] items-center',
   {
     variants: {
       position: {

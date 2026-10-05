@@ -109,7 +109,7 @@ export function NotificationsPopoverContent({
 
   return (
     <Popover.Content
-      className={cn('w-md max-w-[calc(100vw-1rem)] gap-0 p-0', className)}
+      className={cn('max-w-[calc(100vw-1rem)] gap-0 p-0', className)}
       {...contentProps}
     >
       <Popover.Header className="flex-row items-center border-b px-4 py-2">

@@ -18,7 +18,7 @@ export function ArtistAboutTab({artist}: ArtistAboutTabProps) {
   }, [artist.profile_images]);
 
   return (
-    <div className="">
+    <div>
       <div className="grid grid-cols-3 gap-lg lg:grid-cols-4">
         {images.map((src, index) => (
           <ImageZoomDialog
@@ -37,7 +37,7 @@ export function ArtistAboutTab({artist}: ArtistAboutTabProps) {
         ))}
       </div>
       <div
-        className="whitespace-pre-wrap py-6 text-sm"
+        className="keekii-reading whitespace-pre-wrap py-6 text-sm"
         dangerouslySetInnerHTML={{__html: description || ''}}
       />
       {artist.links?.length && !artistPage?.showDescription ? (

@@ -168,7 +168,7 @@ export const InputInsidePopup = meta.story({
       <Combobox.ButtonTrigger
         placeholder={<Trans message="Select a country" />}
       />
-      <Combobox.Content className="w-sm" align="center">
+      <Combobox.Content align="center">
         <Combobox.InsetInput placeholder="Search" />
         <Combobox.Empty>
           <Trans message="No items found." />

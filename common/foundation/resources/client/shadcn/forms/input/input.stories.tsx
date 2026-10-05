@@ -211,7 +211,7 @@ export const InputButtonGroup = meta.story({
 
 export const Sizes = meta.story({
   render: () => (
-    <div className="grid w-md gap-3">
+    <div className="grid gap-3">
       <Input placeholder="Extra small input" className="h-6 px-2" />
       <Input placeholder="Small input" className="h-8" />
       <Input placeholder="Default input" />

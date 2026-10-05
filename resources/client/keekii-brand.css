@@ -411,3 +411,47 @@
   letter-spacing: -0.02em;
   line-height: 1.08;
 }
+
+/* ---------------------------------------------------------------------
+ * 11. Content measures (workstream B)
+ *
+ * Two widths, not one. A page has either a band of content or a column of
+ * prose, and conflating them is what produced the sprawl this replaces:
+ * every prose page that wanted to be readable reached for an ad hoc
+ * `mx-auto max-w-<n>` (195 on the backstage form, 180 on the profile
+ * description, 3xl in the company hero), and every band reached for
+ * max-w-7xl, so nothing said which of the two it was.
+ *
+ *  --be-measure-band    80rem  content bands: legal pages, link columns,
+ *                                grids. Matches Tailwind's max-w-7xl.
+ *  --be-measure-reading 48rem  running text: bios, policy bodies, ledes.
+ *                                Matches Tailwind's max-w-3xl, which is the
+ *                                width the company hero was already using.
+ *
+ * 48rem is ~66 characters at the 16px body size, which is where line length
+ * stops costing the reader a re-parse on every line. Going wider is not a
+ * generosity, it is a readability tax.
+ *
+ * Both are utilities rather than a TS constant so the same width can be
+ * reached from a Blade view or a plain <div> without importing anything.
+ * ------------------------------------------------------------------- */
+@utility keekii-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--be-measure-band, 80rem);
+  padding-inline: 1rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility keekii-reading {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--be-measure-reading, 48rem);
+}

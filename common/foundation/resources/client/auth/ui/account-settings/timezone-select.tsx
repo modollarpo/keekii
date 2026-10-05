@@ -36,7 +36,7 @@ export function TimezoneSelect({extraItems}: {extraItems?: TimezoneItem[]}) {
       <Combobox.ButtonTrigger
         placeholder={<Trans message="Select timezone" />}
       />
-      <Combobox.Content className="w-sm">
+      <Combobox.Content>
         <Combobox.InsetInput placeholder={trans(message('Search timezones'))} />
         <Combobox.Empty>
           <Trans message="No timezones found." />

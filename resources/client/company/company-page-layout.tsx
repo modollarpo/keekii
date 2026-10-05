@@ -29,7 +29,11 @@ export type CompanyPageLayoutProps = {
 
 /** Shared vertical rhythm and container. Every section on these pages uses it. */
 export const CompanySection = {
-  container: 'mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8',
+  // keekii-container is the shared content measure (workstream B): max-w-7xl
+  // plus the 4/6/8 responsive gutters, defined once in keekii-brand.css. This
+  // string used to be spelled out here and independently in the legal layout's
+  // hero, which is how two "the same" containers drifted apart.
+  container: 'keekii-container',
   band: 'py-16 sm:py-20 lg:py-24',
 };
 
@@ -125,7 +129,7 @@ export function CompanyPageHero({
       <div
         className={`${CompanySection.container} pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-32`}
       >
-        <div className="keekii-enter mx-auto max-w-3xl text-center">
+        <div className="keekii-enter keekii-reading text-center">
           <p className="text-sm/6 font-semibold tracking-widest text-primary uppercase">
             <Trans message={eyebrow} />
           </p>

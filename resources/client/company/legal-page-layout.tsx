@@ -79,13 +79,20 @@ export function LegalPageLayout({
         />
 
         <div className={`${CompanySection.container} py-16 sm:py-20`}>
+          {/* The band is 80rem wide but the prose column is not allowed to be.
+              Without the max-width below this was a 15rem rail plus whatever
+              the viewport gave the text, which lands around 120 characters per
+              line on a desktop -- roughly double the ~66 that stays readable.
+              These are the longest documents on the site, so it is the page
+              where paying for the cap costs nothing and skipping it costs the
+              most. */}
           <div className="grid gap-12 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] lg:gap-16">
             <LegalNav
               currentPath={link.to}
               links={navLinks.map(item => ({label: item.label, to: item.to}))}
             />
 
-            <div className="min-w-0">
+            <div className="min-w-0 max-w-(--be-measure-reading)">
               {updated ? (
                 <p className="mb-10 text-sm text-muted-foreground">
                   <Trans message="Last updated" />: {updated}

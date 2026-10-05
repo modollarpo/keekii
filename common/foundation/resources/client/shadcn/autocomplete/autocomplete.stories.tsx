@@ -96,7 +96,7 @@ export const SearchAutocomplete = meta.story(() => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   return (
-    <div className="w-lg">
+    <div>
       <Autocomplete.Root
         items={searchResults}
         autoHighlight
@@ -187,7 +187,7 @@ export const EmojiPicker = meta.story(() => {
   }
 
   return (
-    <div className="w-md">
+    <div>
       <div className="flex items-center gap-2">
         <Input
           ref={textInputRef}

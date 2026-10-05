@@ -94,7 +94,7 @@ const suggestions = [
 
 export const CommandDemo = meta.story(() => {
   return (
-    <Command.Root className="w-md max-w-md border" items={suggestions}>
+    <Command.Root className="max-w-md border" items={suggestions}>
       <Command.Input placeholder="Type a command or search..." />
       <Command.Empty>No results found.</Command.Empty>
       <Command.List>
