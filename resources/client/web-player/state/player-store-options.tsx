@@ -1,8 +1,6 @@
+import {playbackAuthGateState, shouldGatePlayback} from '@app/web-player/auth/playback-auth-gate-store';
+import {PartialArtist} from '@app/web-player/artists/artist';
 import {loadMediaItemTracks} from '@app/web-player/requests/load-media-item-tracks';
-import {
-  playbackAuthGateState,
-  shouldGatePlayback,
-} from '@app/web-player/auth/playback-auth-gate-store';
 import {playerOverlayState} from '@app/web-player/state/player-overlay-store';
 import {findAudiusStream} from '@app/web-player/tracks/requests/find-audius-stream';
 import {findJamendoStream} from '@app/web-player/tracks/requests/find-jamendo-stream';
@@ -169,6 +167,12 @@ async function cueDirectStreamFallback(
   }
 }
 
+// Tracks whether we currently own document.title, plus the page title we
+// displaced. Restored on playbackEnd so a page that set its own SEO title
+// (album, artist, channel) gets it back when the queue runs out.
+let nowPlayingTrackId: string | number | null = null;
+let pageTitleBeforeNowPlaying: string | null = null;
+
 function setMediaSessionMetadata(media: MediaItem<Track>) {
   if ('mediaSession' in navigator) {
     const track = media.meta;
@@ -247,15 +251,26 @@ export const playerStoreOptions: Partial<PlayerStoreOptions> = {
     cued: ({state: {cuedMedia, shuffledQueue}}) => {
       if (!cuedMedia) return;
       const site_name = getBootstrapData().settings.branding.site_name;
-      let title = `${cuedMedia.meta.name}`;
-      const artistName = cuedMedia.meta.artists?.[0]?.name;
+      const trackName = cuedMedia.meta.name;
+      // every credited artist, not just the first: a collab was previously
+      // truncated to one name
+      const artistNames = (cuedMedia.meta.artists as PartialArtist[])
+        ?.map(artist => artist.name)
+        .filter(Boolean);
 
-      if (artistName) {
-        title = `${title} - ${artistName} - ${site_name}`;
-      } else {
-        title = `${title} - ${site_name}`;
+      const title =
+        artistNames && artistNames.length > 0
+          ? `${trackName} by ${artistNames.join(' ft. ')} - ${site_name}`
+          : `${trackName} - ${site_name}`;
+
+      // Remember the page's own title before we take the tab over, so
+      // playbackEnd can hand it back. Album/artist/channel pages set their own
+      // title through Helmet, which only re-asserts when its tags change, so
+      // without this the page title stays clobbered once a track has played.
+      if (!nowPlayingTrackId) {
+        pageTitleBeforeNowPlaying = document.title;
       }
-
+      nowPlayingTrackId = cuedMedia.id;
       document.title = title;
 
       // Look-ahead: prefetch YouTube video IDs for the next 3 tracks in the
@@ -306,7 +321,25 @@ export const playerStoreOptions: Partial<PlayerStoreOptions> = {
         });
       }
     },
-    playbackEnd: ({state: {cuedMedia}}) => {
+    playbackEnd: ({state: {cuedMedia, shuffledQueue, repeat}}) => {
+      if (nowPlayingTrackId && pageTitleBeforeNowPlaying !== null) {
+        // playNext follows this event. If anything is left to play, the next
+        // `cued` overwrites the title and we should leave it alone. Only the
+        // exhausted-queue case needs the page's own title back.
+        const currentIndex = shuffledQueue.findIndex(
+          m => m.id === cuedMedia?.id,
+        );
+        const hasNextUp =
+          repeat === 'all' ||
+          (currentIndex !== -1 && currentIndex < shuffledQueue.length - 1);
+
+        if (!hasNextUp) {
+          document.title = pageTitleBeforeNowPlaying;
+          nowPlayingTrackId = null;
+          pageTitleBeforeNowPlaying = null;
+        }
+      }
+
       // clear track play
       if (cuedMedia) {
         trackPlays.delete(cuedMedia.meta.id);
