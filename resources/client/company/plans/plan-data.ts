@@ -61,7 +61,6 @@ export const plans: PlanDefinition[] = [
     ],
     included: [
       'Ad-supported listening',
-      'Standard audio quality',
       'Online playback only',
       'One account',
     ],
@@ -79,7 +78,7 @@ export const plans: PlanDefinition[] = [
       {
         question: 'What does Premium add?',
         answer:
-          'Premium removes advertising, raises the audio quality, unlocks offline downloads and adds the listening tools that most subscribers use daily.',
+          'Premium removes advertising, unlocks offline downloads and adds the listening tools that most subscribers use daily.',
       },
       {
         question: 'Can I move to Premium later without losing anything?',
@@ -93,7 +92,7 @@ export const plans: PlanDefinition[] = [
     label: 'Premium Individual',
     name: 'Keekii Premium Individual',
     summary:
-      'One account, ad-free, offline, at the highest audio quality.',
+      'One account, ad-free, and offline.',
     tagline:
       'One account, nothing in the way. The plan most people on Keekii have.',
     audience: 'One person',
@@ -103,7 +102,6 @@ export const plans: PlanDefinition[] = [
     benefits: [
       'Ad-free listening, everywhere',
       'Offline downloads on up to 5 devices',
-      'Highest audio quality available',
       'Unlimited skips and no shuffle limits',
       'On-demand playback of anything you want',
     ],
@@ -111,7 +109,6 @@ export const plans: PlanDefinition[] = [
       'Everything in Keekii Free',
       'No advertising',
       'Offline downloads',
-      'Highest audio quality',
       'Lyrics view',
     ],
     idealFor: [
@@ -152,7 +149,6 @@ export const plans: PlanDefinition[] = [
       'Two fully separate accounts',
       'Each person gets their own library and recommendations',
       'Ad-free listening and offline downloads on both',
-      'Highest audio quality on both',
       'One monthly or annual payment',
     ],
     included: [
@@ -160,7 +156,6 @@ export const plans: PlanDefinition[] = [
       '2 separate accounts',
       'No advertising',
       'Offline downloads on both accounts',
-      'Highest audio quality',
     ],
     idealFor: [
       'Couples or flatmates with different taste',
@@ -201,7 +196,6 @@ export const plans: PlanDefinition[] = [
       'One account can be used while travelling',
       'Everyone gets their own library and recommendations',
       'Ad-free listening and offline downloads throughout',
-      'Highest audio quality throughout',
     ],
     included: [
       'Everything in Premium Individual, six times over',
@@ -248,7 +242,6 @@ export const plans: PlanDefinition[] = [
       'Everything in Premium Individual',
       'Reduced rate, for as long as you are eligible',
       'Ad-free listening and offline downloads',
-      'Highest audio quality',
       'Re-verified each academic year',
     ],
     included: [
@@ -256,7 +249,6 @@ export const plans: PlanDefinition[] = [
       'Student rate',
       'No advertising',
       'Offline downloads',
-      'Highest audio quality',
     ],
     idealFor: [
       'School, college and university students',
