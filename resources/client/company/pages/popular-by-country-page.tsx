@@ -42,7 +42,7 @@ export function Component() {
       title="Popular music by country"
       lead="What people in each market are actually listening to right now, charted from real plays rather than assembled by hand. Fifteen countries, and no way to buy a place on any of them."
       actions={[
-        {label: 'Browse your country', to: '/channels'},
+        {label: 'Browse your country', to: '#markets'},
         {label: 'Create a free account', to: '/register'},
       ]}
     >
@@ -94,6 +94,7 @@ export function Component() {
       </CompanySectionBlock>
 
       <CompanySectionBlock
+        id="markets"
         title="Pick your market"
         description="Every country Keekii is live in, with the scenes currently carrying it."
         background="muted"
@@ -194,7 +195,7 @@ export function Component() {
               title: 'Genre channels',
               description:
                 'Dig further in by genre rather than by geography.',
-              to: '/channels',
+              to: '/genres',
             },
             {
               icon: SearchIcon,
@@ -218,7 +219,7 @@ export function Component() {
         title="Start from where you are"
         description="Pick a country, pick a genre, or just press play and let the radio do it."
         actions={[
-          {label: 'Browse channels', to: '/channels'},
+          {label: 'Browse channels', to: '/genres'},
           {label: 'Create a free account', to: '/register'},
         ]}
       />

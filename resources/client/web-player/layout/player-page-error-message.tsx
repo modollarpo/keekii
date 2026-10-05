@@ -9,7 +9,7 @@ import {Trans} from '@ui/i18n/trans';
 import {isAxiosError} from 'axios';
 import {WifiOffIcon} from 'lucide-react';
 import {useState} from 'react';
-import {useRouteError} from 'react-router';
+import {useRevalidator, useRouteError} from 'react-router';
 
 export function PlayerPageErrorMessage() {
   const isOffline = useIsOffline();
@@ -25,10 +25,14 @@ export function PlayerPageErrorMessage() {
 
 function OfflineMessage() {
   const canOffline = useCanOffline();
+  const revalidator = useRevalidator();
   const [isRetrying, setIsRetrying] = useState(false);
   const handleRetry = async () => {
     setIsRetrying(true);
     await queryClient.resetQueries();
+    // the route error itself lives in React Router, so the loaders have to be
+    // re-run for the reconnect to actually render the page again.
+    await revalidator.revalidate();
     setIsRetrying(false);
   };
   return (

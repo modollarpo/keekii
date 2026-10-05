@@ -213,6 +213,15 @@ class BaseBootstrapData implements BootstrapData
             return;
         }
 
+        // Signing in is not enough. Ad code is only stripped for users with a
+        // subscription that is currently valid (active, on trial or inside its
+        // grace period), which is the same rule AdHost applies on the client.
+        // Using $user alone here stripped ads for every logged-in account,
+        // including free users and users whose subscription has lapsed.
+        if (!$user->subscribed()) {
+            return;
+        }
+
         $ads = $this->data['settings']['ads'] ?? null;
 
         if (!is_array($ads)) {
