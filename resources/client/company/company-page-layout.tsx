@@ -1,6 +1,7 @@
 import {StaticPageTitle} from '@common/seo/static-page-title';
 import {Footer} from '@common/ui/footer/footer';
 import {Navbar} from '@common/ui/navigation/navbar/navbar';
+import {SiteNavigationDrawer} from '@app/navigation/site-navigation-drawer';
 import {LinkButton} from '@shadcn/button/button';
 import {getBootstrapData} from '@ui/bootstrap-data/bootstrap-data-store';
 import {Trans} from '@ui/i18n/trans';
@@ -78,6 +79,7 @@ export function CompanyPageLayout({
       )}
 
       <Navbar.Root className="sticky top-0 z-10 border-b bg-background">
+        <SiteNavigationDrawer />
         <Navbar.Logo />
         <Navbar.Content className="ml-auto">
           <Navbar.AuthContent />

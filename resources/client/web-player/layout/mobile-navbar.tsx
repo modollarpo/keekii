@@ -37,9 +37,10 @@
  */
 
 import {MobileSearchOverlay} from '@app/web-player/search/mobile-search-overlay';
+import {DashboardLayout} from '@common/ui/dashboard/dashboard-layout';
 import {Navbar} from '@common/ui/navigation/navbar/navbar';
 import {cn} from '@ui/utils/cn';
-import {SearchIcon} from 'lucide-react';
+import {MenuIcon, SearchIcon} from 'lucide-react';
 import {useCallback, useState} from 'react';
 
 export function MobileNavbar() {
@@ -55,6 +56,14 @@ export function MobileNavbar() {
 
       {/* ── Persistent header bar ────────────────────────────────────────────── */}
       <Navbar.Root className="h-13 shrink-0 gap-sm border-b bg-background px-3 py-0">
+        {/* Burger ─ opens the same sidebar content the desktop layout shows.
+            Sidebar.Root renders as a drawer while isMobileMode is true, so
+            this reuses the player sidenav verbatim instead of duplicating
+            the primary/library/playlist menus here. */}
+        <DashboardLayout.SidebarToggle sidebar="left">
+          <MenuIcon />
+        </DashboardLayout.SidebarToggle>
+
         {/* Brand ─ shared component so branding + dark mode stay centrally managed */}
         <Navbar.Logo className="max-h-6" logoType="auto" />
 

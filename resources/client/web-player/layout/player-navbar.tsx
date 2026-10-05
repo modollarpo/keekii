@@ -53,6 +53,7 @@ export function PlayerNavbar() {
           leftSidebar.status === 'expanded' && 'min-w-57',
         )}
       >
+        <DashboardLayout.SidebarToggle sidebar="left" />
         <Navbar.Logo />
       </div>
       <SearchAutocomplete />

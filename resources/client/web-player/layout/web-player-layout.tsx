@@ -28,11 +28,17 @@ export function WebPlayerLayout() {
   const isMobile = useIsTabletMediaQuery();
 
   const content = isMobile ? (
-    <div className="bg flex h-screen flex-col">
+    <DashboardLayout.Root
+      name="web-player"
+      defaultLeftSidebarStatus="collapsed"
+    >
       <MobileNavbar />
-      <Main />
-      <MobilePlayerControls />
-    </div>
+      <DashboardLayout.Content className="min-h-0 flex-1 flex-col">
+        <Main />
+        <MobilePlayerControls />
+      </DashboardLayout.Content>
+      <Sidenav />
+    </DashboardLayout.Root>
   ) : (
     <DashboardLayout.Root
       name="web-player"
