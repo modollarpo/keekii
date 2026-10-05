@@ -66,10 +66,14 @@ export const backstageRoutes: RouteObject[] = [
           Component: BackstageTrackInsights,
         }),
       ),
-    loader: async ({params}) =>
-      queryClient.ensureQueryData(
+    loader: async ({params}) => {
+      const guard = authGuard({permission: 'music.create'});
+      if (guard) return guard;
+
+      return queryClient.ensureQueryData(
         appQueries.tracks.get(params.trackId!, 'track'),
-      ),
+      );
+    },
   },
 
   // Albums
@@ -101,7 +105,10 @@ export const backstageRoutes: RouteObject[] = [
         }),
       ),
     loader: async ({params}) => {
-      queryClient.ensureQueryData(
+      const guard = authGuard({permission: 'music.create'});
+      if (guard) return guard;
+
+      return queryClient.ensureQueryData(
         appQueries.albums.get(params.albumId!, 'album'),
       );
     },
@@ -130,7 +137,18 @@ export const backstageRoutes: RouteObject[] = [
         }),
       ),
     loader: async ({params}) => {
-      queryClient.ensureQueryData(
+      // authGuard returns null when allowed and a redirect response when not,
+      // so it has to be checked before the query runs. This mirrors the upload
+      // guard at the top of this file.
+      //
+      // Deliberately not a dedicated analytics permission: nothing grants one,
+      // so requiring it would lock out every existing creator. Note authGuard
+      // already redirects to /pricing when the guard fails and billing is live
+      // but the visitor is not subscribed, so the upsell comes for free.
+      const guard = authGuard({permission: 'music.create'});
+      if (guard) return guard;
+
+      return queryClient.ensureQueryData(
         appQueries.artists.show(params.artistId!).artist('artist'),
       );
     },

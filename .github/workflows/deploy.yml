@@ -183,6 +183,17 @@ jobs:
             # Admin-editable SEO overrides for the public pages. Named explicitly
             # because this deploy does not run a blanket `migrate`.
             sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_02_000000_create_company_page_seo_overrides_table.php || echo 'company page seo migration skipped'
+            # Realign the seeded products with the five plans published in
+            # plan-data.ts, attach music.download/music.offline to the Premium
+            # plans, and flip billing.enable. Named explicitly for the same
+            # reason as the line above: this deploy runs no blanket `migrate`.
+            # Gateway enable flags are left untouched. The migration seeds with
+            # CrupdateProduct's default syncProduct: true, so each non-free
+            # plan is created on the enabled gateways as it is written.
+            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_05_120000_realign_plans_and_enable_billing.php || echo 'billing plans migration skipped'
+            # Makes the per-artist analytics query use an index instead of
+            # scanning track_plays. Same explicit-path reason as above.
+            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_05_121000_add_track_date_index_to_track_plays.php || echo 'track_plays index migration skipped'
             sudo -u www-data php artisan cache:clear 2>/dev/null || echo 'cache:clear skipped'
             sudo -u www-data php artisan config:clear 2>/dev/null || echo 'config:clear skipped'
             sudo systemctl restart php8.3-fpm

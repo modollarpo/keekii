@@ -42,12 +42,44 @@ class BuildInsightsReport
         return collect($metrics)
             ->mapWithKeys(function ($metric) {
                 $method = sprintf('get%sMetric', ucfirst($metric));
-                if (method_exists($this, $method)) {
-                    return [$metric => $this->$method()];
+                if (!method_exists($this, $method)) {
+                    return [$metric => []];
                 }
-                return [$metric => []];
+
+                if (!$this->canViewMetric($method)) {
+                    // Silently drop rather than 403: the report is a single
+                    // request for several metrics, and one disallowed metric
+                    // should not fail the whole chart set the artist asked for.
+                    return [$metric => []];
+                }
+
+                return [$metric => $this->$method()];
             })
             ->toArray();
+    }
+
+    /**
+     * Metrics that break listener anonymity.
+     *
+     * `users` groups plays by user_id and returns listener names, so it is
+     * only meaningful for someone who can already see every play on the
+     * platform. Everything else (plays, devices, browsers, platforms, tracks,
+     * artists, albums, locations) is aggregate and safe for a creator to see
+     * about their own catalogue.
+     *
+     * This has to be enforced here rather than relying on the caller: metrics
+     * arrive as a request parameter, and createBuilder() only authorizes the
+     * model. Without this check an artist who passes `update` on their own
+     * artist could send metrics=users and receive the identities of everyone
+     * who played their tracks.
+     */
+    protected function canViewMetric(string $method): bool
+    {
+        if ($method !== 'getUsersMetric') {
+            return true;
+        }
+
+        return Gate::allows('admin.access');
     }
 
     protected function createBuilder(): Builder
