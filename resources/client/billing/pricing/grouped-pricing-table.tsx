@@ -98,9 +98,10 @@ export function GroupedPricingTable({
           />
         </div>
       ) : (
-        // A group can still hold more than one plan (Free ships the legacy
-        // Basic product next to Keekii Free), so this is a grid rather than a
-        // centred flex row: the cards need to wrap instead of colliding.
+        // The Keekii Premium group shows one tier at a time, but Free can hold
+        // more than one plan when the catalogue carries free products besides
+        // Keekii Free, so this is a grid rather than a centred flex row: the
+        // cards need to wrap instead of colliding.
         <div
           className={cn(
             'grid items-start justify-items-center gap-6',

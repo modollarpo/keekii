@@ -27,7 +27,7 @@ export type PremiumTier = {
 export function groupPricingProducts(products: Product[]): PricingGroup[] {
   const visible = products.filter(plan => !plan.hidden);
 
-  const free = visible.filter(plan => plan.free);
+  const free = preferCurrentFreePlan(visible.filter(plan => plan.free));
   const proUnlimited = visible.filter(plan =>
     /pro\s*unlimited/i.test(plan.name),
   );
@@ -43,6 +43,18 @@ export function groupPricingProducts(products: Product[]): PricingGroup[] {
 
   // Drop a group with nothing in it rather than rendering an empty tab.
   return groups.filter(group => group.products.length > 0);
+}
+
+/**
+ * The catalogue still carries the legacy free product next to Keekii Free, and
+ * both are flagged free, so the Free group would otherwise show two cards that
+ * cost the same thing side by side and read as a choice. Show only the current
+ * Keekii plan when one is on offer, and fall back to the whole free list if
+ * there is no match so a free plan can never drop off the pricing page.
+ */
+function preferCurrentFreePlan(free: Product[]): Product[] {
+  const current = free.filter(plan => /keekii\s*free/i.test(plan.name));
+  return current.length ? current : free;
 }
 
 /**
