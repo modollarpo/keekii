@@ -11,6 +11,10 @@ interface Props {
   thumbClassName?: string;
   className?: string;
   onPointerMove?: (e: PointerEvent) => void;
+  // Extra lock on top of the provider-readiness lock, so callers can freeze
+  // seeking (ads) without having to know how readiness is derived. Defaults
+  // to false, so existing usages are unchanged.
+  disabled?: boolean;
 }
 
 export function Seekbar({
@@ -19,6 +23,7 @@ export function Seekbar({
   thumbClassName,
   className,
   onPointerMove,
+  disabled,
 }: Props) {
   const {pause, seek, setIsSeeking, play, getState} = usePlayerActions();
   const duration = usePlayerStore(s => s.mediaDuration);
@@ -32,7 +37,7 @@ export function Seekbar({
   return (
     <Slider
       className={className}
-      disabled={!playerReady}
+      disabled={!playerReady || disabled}
       value={currentTime}
       min={0}
       max={duration > 1 ? duration : 1}

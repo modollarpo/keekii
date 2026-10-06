@@ -1,3 +1,6 @@
+import {AdNowPlaying} from '@app/web-player/ads/ad-now-playing';
+import {AdNextButton, AdPreviousButton} from '@app/web-player/ads/ad-controls';
+import {useCuedAd} from '@app/web-player/ads/use-cued-ad';
 import {getArtistLink} from '@app/web-player/artists/artist-link';
 import {usePrimaryArtistForCurrentUser} from '@app/web-player/backstage/use-primary-artist-for-current-user';
 import {webPlayerSidebarIcons} from '@app/web-player/layout/web-player-sidebar-icons';
@@ -11,9 +14,7 @@ import {UnstyledCustomMenuItem} from '@common/menus/custom-menu';
 import {useCustomMenu} from '@common/menus/use-custom-menu';
 import {useCurrentTime} from '@common/player/hooks/use-current-time';
 import {usePlayerStore} from '@common/player/hooks/use-player-store';
-import {NextButton} from '@common/player/ui/controls/next-button';
 import {PlayButton} from '@common/player/ui/controls/play-button';
-import {PreviousButton} from '@common/player/ui/controls/previous-button';
 import {NavbarAuthMenu} from '@common/ui/navigation/navbar/navbar-auth-menu';
 import {useNavigate} from '@common/ui/navigation/use-navigate';
 import {Dropdown} from '@shadcn/dropdown/dropdown';
@@ -61,7 +62,14 @@ function PlayerControls() {
 }
 
 function QueuedTrack() {
+  const ad = useCuedAd();
   const track = useCuedTrack();
+
+  if (ad) {
+    return (
+      <AdNowPlaying imageClassName="h-9 w-9 transition-transform duration-300 group-active:scale-95 group-active:brightness-90 motion-reduce:transition-none" />
+    );
+  }
 
   if (!track) {
     return null;
@@ -85,12 +93,12 @@ function QueuedTrack() {
 function PlaybackButtons() {
   return (
     <div className="flex items-center justify-center">
-      <PreviousButton stopPropagation />
+      <AdPreviousButton stopPropagation />
       <div className="relative isolate">
         <BufferingIndicator />
         <PlayButton className="text-[var(--be-brand-ink)] hover:scale-105 active:scale-95 keekii-interactive" iconClassName="size-8" stopPropagation size="icon-lg" />
       </div>
-      <NextButton stopPropagation />
+      <AdNextButton stopPropagation />
     </div>
   );
 }

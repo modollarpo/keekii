@@ -1,5 +1,13 @@
 import {playbackAuthGateState, shouldGatePlayback} from '@app/web-player/auth/playback-auth-gate-store';
 import {PartialArtist} from '@app/web-player/artists/artist';
+import {isAdMedia} from '@app/web-player/ads/ad-media-item';
+import {
+  adInterrupted,
+  isPrerollServing,
+  markAdCompleted,
+  maybeStartPreroll,
+  resumeAfterAd,
+} from '@app/web-player/ads/session-preroll';
 import {loadMediaItemTracks} from '@app/web-player/requests/load-media-item-tracks';
 import {playerOverlayState} from '@app/web-player/state/player-overlay-store';
 import {findAudiusStream} from '@app/web-player/tracks/requests/find-audius-stream';
@@ -195,6 +203,15 @@ function setMediaSessionMetadata(media: MediaItem<Track>) {
   }
 }
 
+// Freshest player state snapshot, captured from an event listener. The
+// option callbacks (onBeforePlay/onBeforePlayNext/...) do not receive store
+// state themselves, so this is how they reach the store's actions.
+let lastState: PlayerState | null = null;
+// True between the moment cue() starts and the moment the provider reports
+// back (or errors). While set, our snapshot of "what is about to play" may
+// still describe the previous media.
+let cuePending = false;
+
 export const playerStoreOptions: Partial<PlayerStoreOptions> = {
   persistQueueInLocalStorage: true,
   defaultVolume: getBootstrapData().settings.player?.default_volume,
@@ -207,10 +224,14 @@ export const playerStoreOptions: Partial<PlayerStoreOptions> = {
       }
     },
   },
-  onBeforePlay: () => {
+  onBeforePlay: async () => {
     // don't open the fullscreen overlay for guests who are about to see the
     // sign-in dialog; the "play" listener below handles gating.
     if (shouldGatePlayback()) return;
+    // Session pre-roll. The ad decision was requested long before this point
+    // and the whole thing fails open: on any timeout, error or missing ad it
+    // leaves the real track cued and simply carries on.
+    await maybeStartPreroll(lastState, cuePending);
     const player = getBootstrapData().settings.player;
     // on mobile, YouTube embed playback needs to be started via user gesture
     // on YouTube embed itself, starting it with custom play button will not work
@@ -224,7 +245,12 @@ export const playerStoreOptions: Partial<PlayerStoreOptions> = {
       return new Promise<void>(resolve => setTimeout(() => resolve(), 151));
     }
   },
+  onBeforePlayNext: () => resumeAfterAd(lastState) || undefined,
+  onBeforePlayPrevious: () => (isPrerollServing() ? true : undefined),
   loadMoreMediaItems: async media => {
+    // an ad never heads a real queue continuation - it is not in the queue at
+    // all, and its meta must never reach the track loader
+    if (isAdMedia(media)) return undefined;
     const groupId = media?.groupId?.toString();
     // 1. Normal path: load more tracks from the same queue/channel group.
     if (media && groupId && !groupId.includes('libraryDownloadedTracks')) {
@@ -247,9 +273,24 @@ export const playerStoreOptions: Partial<PlayerStoreOptions> = {
     }
   },
   listeners: {
+    // earliest point at which a cue() is in flight; records that our state
+    // snapshot may still describe the previous media
+    beforeCued: ({state}) => {
+      lastState = state;
+      cuePending = true;
+    },
     // change document title to currently cued track name and prefetch upcoming tracks
-    cued: ({state: {cuedMedia, shuffledQueue}}) => {
+    cued: ({state}) => {
+      lastState = state;
+      cuePending = false;
+      const {cuedMedia, shuffledQueue} = state;
       if (!cuedMedia) return;
+      if (isAdMedia(cuedMedia)) {
+        setTitleForAd(cuedMedia);
+        return;
+      }
+      // a real track took over the surface, so any pre-roll is over
+      adInterrupted();
       const site_name = getBootstrapData().settings.branding.site_name;
       const trackName = cuedMedia.meta.name;
       // every credited artist, not just the first: a collab was previously
@@ -288,6 +329,8 @@ export const playerStoreOptions: Partial<PlayerStoreOptions> = {
       }
     },
     play: ({state: {cuedMedia, pause, play}}) => {
+      // an ad is not a track play: no auth gate, no permission toast, no log
+      if (isAdMedia(cuedMedia)) return;
       // signed-out visitors must register or sign in before playback starts;
       // keep the track cued so it can resume after a successful auth.
       if (shouldGatePlayback()) {
@@ -322,6 +365,13 @@ export const playerStoreOptions: Partial<PlayerStoreOptions> = {
       }
     },
     playbackEnd: ({state: {cuedMedia, shuffledQueue, repeat}}) => {
+      // the ad never owned the queue, so none of the title hand-back or play
+      // log cleanup below applies to it - but running to its own end is
+      // precisely what "completed" means for impression reporting
+      if (isAdMedia(cuedMedia)) {
+        markAdCompleted();
+        return;
+      }
       if (nowPlayingTrackId && pageTitleBeforeNowPlaying !== null) {
         // playNext follows this event. If anything is left to play, the next
         // `cued` overwrites the title and we should leave it alone. Only the
@@ -348,10 +398,12 @@ export const playerStoreOptions: Partial<PlayerStoreOptions> = {
         directStreamCuedIds.delete(`${cuedMedia.id}`);
       }
     },
-    error: async ({
-      sourceEvent,
-      state: {cuedMedia, providerApi, providerName, emit, cue, play},
-    }) => {
+    error: async ({sourceEvent, state}) => {
+      cuePending = false;
+      // an ad that misbehaves must never park the player: hand control back
+      // to the track it interrupted and stop here (workstream E)
+      if (resumeAfterAd(state)) return;
+      const {cuedMedia, providerApi, providerName, emit, cue, play} = state;
       const e = sourceEvent as YoutubeProviderError;
       if (providerName === 'youtube' && providerApi) {
         logYoutubeError(e);
@@ -459,6 +511,18 @@ export const playerStoreOptions: Partial<PlayerStoreOptions> = {
     tracksSkippedDueToError = 0;
   },
 };
+
+function setTitleForAd(media: MediaItem) {
+  const site_name = getBootstrapData().settings.branding.site_name;
+  // claim the tab title exactly like a track does, so the page's own title
+  // is still what gets handed back once the queue runs dry
+  if (!nowPlayingTrackId && pageTitleBeforeNowPlaying === null) {
+    pageTitleBeforeNowPlaying = document.title;
+  }
+  nowPlayingTrackId = media.id;
+  const adName = media.meta?.name as string | undefined;
+  document.title = adName ? `${adName} - ${site_name}` : site_name;
+}
 
 function showSkipToast(media: MediaItem<Track> | null | undefined) {
   if (!media?.meta) return;

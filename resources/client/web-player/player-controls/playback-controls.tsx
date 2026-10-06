@@ -1,8 +1,8 @@
+import {AdNextButton, AdPreviousButton} from '@app/web-player/ads/ad-controls';
+import {useCuedAd} from '@app/web-player/ads/use-cued-ad';
 import {BufferingIndicator} from '@app/web-player/player-controls/buffering-indicator';
 import {MainSeekbar} from '@app/web-player/player-controls/seekbar/main-seekbar';
-import {NextButton} from '@common/player/ui/controls/next-button';
 import {PlayButton} from '@common/player/ui/controls/play-button';
-import {PreviousButton} from '@common/player/ui/controls/previous-button';
 import {RepeatButton} from '@common/player/ui/controls/repeat-button';
 import {ShuffleButton} from '@common/player/ui/controls/shuffle-button';
 import {cn} from '@ui/utils/cn';
@@ -12,10 +12,14 @@ interface Props {
   className?: string;
 }
 export function PlaybackControls({className}: Props) {
+  // Same component serves the desktop bar and the expanded overlay, so the
+  // ad's restrictions land on both surfaces at once.
+  const ad = useCuedAd();
+
   return (
     <div className={className}>
       <PlaybackButtons />
-      <MainSeekbar />
+      <MainSeekbar disabled={!!ad} />
     </div>
   );
 }
@@ -32,12 +36,12 @@ function PlaybackButtons() {
       )}
     >
       <ShuffleButton className="hover:scale-105 active:scale-95 keekii-interactive" />
-      <PreviousButton iconClassName="size-6" className="hover:scale-105 active:scale-95 keekii-interactive" />
+      <AdPreviousButton iconClassName="size-6" className="hover:scale-105 active:scale-95 keekii-interactive" />
       <div className="relative flex items-center justify-center">
         <BufferingIndicator />
         <PlayButton className="size-10.5 text-[var(--be-brand-ink)] hover:scale-105 active:scale-95 keekii-interactive" iconClassName="size-10" />
       </div>
-      <NextButton iconClassName="size-6" className="hover:scale-105 active:scale-95 keekii-interactive" />
+      <AdNextButton iconClassName="size-6" className="hover:scale-105 active:scale-95 keekii-interactive" />
       <RepeatButton className="hover:scale-105 active:scale-95 keekii-interactive" />
     </div>
   );

@@ -1,3 +1,4 @@
+import {Ad} from '@app/web-player/ads/ad';
 import {FullAlbum} from '@app/web-player/albums/album';
 import {assignAlbumToTracks} from '@app/web-player/albums/assign-album-to-tracks';
 import {GetAlbumResponse} from '@app/web-player/albums/requests/get-album-response';
@@ -440,6 +441,15 @@ export const appQueries = {
       infiniteQuery<Repost>({
         queryKey: ['reposts', `${userId}`],
         endpoint: `users/${userId}/reposts`,
+      }),
+  },
+  ads: {
+    invalidateKey: ['ads'],
+    index: (s: Record<string, any> = {}) =>
+      queryOptions({
+        placeholderData: keepPreviousData,
+        queryKey: ['ads', s],
+        queryFn: () => get<PaginatedResource<Ad>>('ads', s),
       }),
   },
   genres: {

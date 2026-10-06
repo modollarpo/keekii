@@ -1,3 +1,5 @@
+import {AdNowPlaying} from '@app/web-player/ads/ad-now-playing';
+import {useCuedAd} from '@app/web-player/ads/use-cued-ad';
 import {ArtistContextDialog} from '@app/web-player/artists/artist-context-dialog';
 import {ArtistLinks} from '@app/web-player/artists/artist-links';
 import {LikeIconButton} from '@app/web-player/library/like-icon-button';
@@ -43,7 +45,20 @@ export function DesktopPlayerControls() {
 }
 
 function QueuedTrack() {
+  const ad = useCuedAd();
   const track = useCuedTrack();
+
+  // The ad meta is shaped like a Track so the shared title/poster code can
+  // read it, but it has no id, album or library records - routing it through
+  // TrackLink/TrackContextDialog would hand it to every track endpoint.
+  if (ad) {
+    return (
+      <div className="w-[30%] min-w-45">
+        <AdNowPlaying imageClassName="size-14 transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:transition-none" />
+      </div>
+    );
+  }
+
   let content: ReactNode;
 
   if (track) {

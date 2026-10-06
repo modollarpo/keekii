@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\AdsController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\AudiusStreamController;
 use App\Http\Controllers\CompanyPageSeoController;
@@ -171,6 +172,17 @@ Route::group(['prefix' => 'v1', 'middleware' => ['optionalAuth:sanctum', 'verifi
     Route::post('genres', [GenreController::class, 'store']);
     Route::put('genres/{id}', [GenreController::class, 'update']);
     Route::delete('genres/{ids}', [GenreController::class, 'destroy']);
+
+    // ADS
+    Route::get('ads', [AdsController::class, 'index']);
+    Route::get('ads/next', [AdsController::class, 'next']);
+    // listener facing: opens then closes an impression, mirroring
+    // tracks/plays/{track}/log above
+    Route::post('ads/{id}/plays', [AdsController::class, 'logPlay']);
+    Route::post('ads/plays/{playId}/finish', [AdsController::class, 'finishPlay']);
+    Route::post('ads', [AdsController::class, 'store']);
+    Route::put('ads/{id}', [AdsController::class, 'update']);
+    Route::delete('ads/{ids}', [AdsController::class, 'destroy']);
 
     // USER PROFILE AND LIBRARY
     Route::get('user-profile/{user}', [UserProfileController::class, 'show'])->withoutMiddleware('verified');

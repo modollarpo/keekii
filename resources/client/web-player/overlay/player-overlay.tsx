@@ -1,3 +1,5 @@
+import {AdNowPlaying} from '@app/web-player/ads/ad-now-playing';
+import {useCuedAd} from '@app/web-player/ads/use-cued-ad';
 import {ArtistLinks} from '@app/web-player/artists/artist-links';
 import {PlayerPageHeaderGradient} from '@app/web-player/layout/player-page-header-gradient';
 import {QueueTrackContextDialog} from '@app/web-player/layout/queue/queue-track-context-dialog';
@@ -185,7 +187,18 @@ function FullscreenButton({overlayRef}: FullscreenButtonProps) {
 }
 
 function QueuedTrack() {
+  const ad = useCuedAd();
   const track = useCuedTrack();
+
+  // No like button, no context menu, no track link: an ad has none of the
+  // records those controls act on.
+  if (ad) {
+    return (
+      <div className="mx-auto my-10 flex w-full max-w-6xl shrink-0 items-center justify-center gap-8.5 px-3.5 md:my-15">
+        <AdNowPlaying imageClassName="size-20 transition-transform motion-reduce:transition-none" />
+      </div>
+    );
+  }
 
   if (!track) {
     return null;

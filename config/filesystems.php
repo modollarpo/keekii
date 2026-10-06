@@ -34,5 +34,16 @@ return [
                 'max_file_size' => '5242880', // 5MB
             ],
         ],
+        'ads' => [
+            'visibility' => 'public',
+            'label' => 'Player ads',
+            'description' =>
+                'Video, image and voiceover creatives for player ads.',
+            'defaults' => [
+                'prefix' => 'ads',
+                'accept' => ['image', 'video', 'audio'],
+                'max_file_size' => '536870912', // 512MB
+            ],
+        ],
     ],
 ];

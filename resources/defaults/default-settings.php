@@ -298,6 +298,13 @@ return [
                         'settings' => ['billing.enable' => true],
                     ],
                     [
+                        'label' => 'Ads',
+                        'action' => '/admin/ads',
+                        'type' => 'route',
+                        'target' => '_self',
+                        'permissions' => ['ads.view'],
+                    ],
+                    [
                         'label' => 'Users',
                         'action' => '/admin/users',
                         'type' => 'route',

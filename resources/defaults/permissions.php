@@ -170,6 +170,33 @@ return [
             ],
         ],
 
+        'Ads' => [
+            [
+                'name' => 'ads.view',
+                'display_name' => 'View ads',
+                'role_types' => ['users'],
+                'description' => 'Allow viewing the player ads list and reports.',
+            ],
+            [
+                'name' => 'ads.create',
+                'display_name' => 'Create ads',
+                'role_types' => ['users'],
+                'description' => 'Allow creating new player ads.',
+            ],
+            [
+                'name' => 'ads.update',
+                'display_name' => 'Manage ads',
+                'role_types' => ['users'],
+                'description' => 'Allow editing and pausing player ads.',
+            ],
+            [
+                'name' => 'ads.delete',
+                'display_name' => 'Delete ads',
+                'role_types' => ['users'],
+                'description' => 'Allow deleting player ads.',
+            ],
+        ],
+
         'Admin' => [
             [
                 'name' => 'admin.access',

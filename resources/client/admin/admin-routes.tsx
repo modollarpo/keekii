@@ -240,6 +240,16 @@ export const adminRoutes: RouteObject[] = [
             appQueries.backstageRequests.show(params.requestId!),
           ),
       },
+      // Ads
+      {
+        path: 'ads',
+        lazy: () => import('@app/admin/ads-datatable-page/ads-datatable-page'),
+        shouldRevalidate: shouldRevalidateDatatableLoader,
+        loader: async ({request}) =>
+          queryClient.ensureQueryData(
+            appQueries.ads.index(searchParamsFromUrl(request.url)),
+          ),
+      },
       // Genres
       {
         path: 'genres',

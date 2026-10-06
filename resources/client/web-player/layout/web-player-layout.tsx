@@ -1,5 +1,7 @@
 import {useOfflineEntitiesStore} from '@app/offline/offline-entities-store';
 import {OfflineQueueToast} from '@app/offline/offline-queue-toast';
+import {AdOverlayExpander} from '@app/web-player/ads/ad-overlay-expander';
+import {initPlayerAds} from '@app/web-player/ads/session-preroll';
 import {PlaybackAuthGateDialog} from '@app/web-player/auth/playback-auth-gate-dialog';
 import {MobileNavbar} from '@app/web-player/layout/mobile-navbar';
 import {PlayerNavbar} from '@app/web-player/layout/player-navbar';
@@ -15,7 +17,7 @@ import {onlineManager} from '@tanstack/react-query';
 import {useSettings} from '@ui/settings/use-settings';
 import {cn} from '@ui/utils/cn';
 import {useIsTabletMediaQuery} from '@ui/utils/hooks/is-tablet-media-query';
-import {useLayoutEffect, useRef} from 'react';
+import {useEffect, useLayoutEffect, useRef} from 'react';
 import {Outlet, useLocation} from 'react-router';
 
 // if the service worker initializes with the window being offline, set the online manager to offline
@@ -26,6 +28,12 @@ if ((window as any).beSwInitialIsOffline) {
 export function WebPlayerLayout() {
   const {player} = useSettings();
   const isMobile = useIsTabletMediaQuery();
+
+  // Request the session pre-roll as soon as the player exists, so the ad
+  // decision is already in hand by the time anyone presses play.
+  useEffect(() => {
+    initPlayerAds();
+  }, []);
 
   const content = isMobile ? (
     <DashboardLayout.Root
@@ -60,6 +68,7 @@ export function WebPlayerLayout() {
     <PlayerContext id="web-player" options={playerStoreOptions}>
       {content}
       <PlayerOverlay />
+      <AdOverlayExpander />
       <PlaybackAuthGateDialog />
       <OfflineQueueToastWrapper />
     </PlayerContext>

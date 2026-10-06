@@ -31,6 +31,14 @@ class MusicUploadPolicy extends FileEntryPolicy
             return true;
         }
 
+        if (
+            $uploadType === 'ads' &&
+            ($this->hasPermission($user, 'ads.create') ||
+                $this->hasPermission($user, 'ads.update'))
+        ) {
+            return true;
+        }
+
         return parent::store($user, $parentId, $uploadType);
     }
 }

@@ -53,4 +53,5 @@ export const UploadType = {
   media: 'media',
   artwork: 'artwork',
   backstageAttachments: 'backstageAttachments',
+  ads: 'ads',
 } as const;
