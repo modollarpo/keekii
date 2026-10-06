@@ -45,7 +45,7 @@ export function AccountSettingsPage({panels, sidenavItems}: Props) {
             <div className="mb-10 text-base text-muted-foreground">
               <Trans message="View and update your account details, profile and more." />
             </div>
-            <div className="flex items-start gap-6">
+            <div className="flex flex-col items-start gap-6 lg:flex-row">
               <AccountSettingsSidenav items={sidenavItems} />
               <main className="flex-auto">
                 {panels ? panels(query.data.data) : null}

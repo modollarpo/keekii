@@ -18,21 +18,28 @@ import {
   CompanySectionBlock,
 } from '../company-page-sections';
 
+/**
+ * `channel` is the ISO 3166-1 alpha-2 slug the country channels are actually
+ * seeded with (see resources/defaults/channels/country-channels.json, e.g.
+ * `country-ng`). Building the href from the market name instead produced
+ * `/channel/country-nigeria`, which is not a channel and 404s.
+ */
 const markets = [
-  {name: 'Nigeria', slug: 'nigeria', note: 'Afrobeats, amapiano, highlife, gospel'},
-  {name: 'Ghana', slug: 'ghana', note: 'Highlife, hiplife, gospel, Afrobeats'},
-  {name: 'South Africa', slug: 'south-africa', note: 'Amapiano, gqom, kwaito, jazz'},
-  {name: 'United Kingdom and Ireland', slug: 'united-kingdom', note: 'Grime, drill, indie, folk'},
-  {name: 'United States', slug: 'united-states', note: 'Hip-hop, country, indie, latin'},
-  {name: 'Canada', slug: 'canada', note: 'Hip-hop, indie, folk, electronic'},
-  {name: 'Australia', slug: 'australia', note: 'Indie, electronic, country, surf'},
-  {name: 'India', slug: 'india', note: 'Filmi, indie, devotional, lo-fi'},
-  {name: 'Brazil', slug: 'brazil', note: 'MPB, baile, funk, samba'},
-  {name: 'Germany', slug: 'germany', note: 'Techno, hip-hop, pop, metal'},
-  {name: 'France', slug: 'france', note: 'Rap, house, indie, pop'},
-  {name: 'Spain', slug: 'spain', note: 'Reggaeton, flamenco, pop, indie'},
-  {name: 'Japan', slug: 'japan', note: 'J-pop, city pop, anisong, jazz'},
-  {name: 'South Korea', slug: 'south-korea', note: 'K-pop, indie, hip-hop, classical'},
+  {name: 'Nigeria', channel: 'ng', note: 'Afrobeats, amapiano, highlife, gospel'},
+  {name: 'Ghana', channel: 'gh', note: 'Highlife, hiplife, gospel, Afrobeats'},
+  {name: 'South Africa', channel: 'za', note: 'Amapiano, gqom, kwaito, jazz'},
+  {name: 'United Kingdom', channel: 'gb', note: 'Grime, drill, indie, folk'},
+  {name: 'Ireland', channel: 'ie', note: 'Indie, folk, electronic, trad'},
+  {name: 'United States', channel: 'us', note: 'Hip-hop, country, indie, latin'},
+  {name: 'Canada', channel: 'ca', note: 'Hip-hop, indie, folk, electronic'},
+  {name: 'Australia', channel: 'au', note: 'Indie, electronic, country, surf'},
+  {name: 'India', channel: 'in', note: 'Filmi, indie, devotional, lo-fi'},
+  {name: 'Brazil', channel: 'br', note: 'MPB, baile, funk, samba'},
+  {name: 'Germany', channel: 'de', note: 'Techno, hip-hop, pop, metal'},
+  {name: 'France', channel: 'fr', note: 'Rap, house, indie, pop'},
+  {name: 'Spain', channel: 'es', note: 'Reggaeton, flamenco, pop, indie'},
+  {name: 'Japan', channel: 'jp', note: 'J-pop, city pop, anisong, jazz'},
+  {name: 'South Korea', channel: 'kr', note: 'K-pop, indie, hip-hop, classical'},
 ];
 
 export function Component() {
@@ -102,8 +109,8 @@ export function Component() {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {markets.map(market => (
             <Link
-              key={market.slug}
-              to={`/channel/country-${market.slug}`}
+              key={market.channel}
+              to={`/channel/country-${market.channel}`}
               className="group flex items-start justify-between gap-4 rounded-card border border-border bg-card p-5 transition-colors duration-(--keekii-dur-quick) hover:border-primary/40 hover:bg-accent/40"
             >
               <div className="min-w-0">

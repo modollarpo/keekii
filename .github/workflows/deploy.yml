@@ -194,6 +194,12 @@ jobs:
             # Makes the per-artist analytics query use an index instead of
             # scanning track_plays. Same explicit-path reason as above.
             sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_05_121000_add_track_date_index_to_track_plays.php || echo 'track_plays index migration skipped'
+            # Strip music.download/music.offline off the free Users and Guests
+            # roles. The first-install seed lost those grants in e3edbef but an
+            # already-installed database never did, and BasePolicy answers from
+            # the guest role for anonymous requests, so this is what actually
+            # closes the open download. Idempotent, same explicit-path reason.
+            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_000000_revoke_download_permissions_from_free_roles.php || echo 'download permission revoke migration skipped'
             sudo -u www-data php artisan cache:clear 2>/dev/null || echo 'cache:clear skipped'
             sudo -u www-data php artisan config:clear 2>/dev/null || echo 'config:clear skipped'
             sudo systemctl restart php8.3-fpm

@@ -18,7 +18,12 @@ type FormValue = {
   recovery_code?: string;
 };
 
-export function TwoFactorChallengePage() {
+interface Props {
+  onSuccess?: () => void;
+  onCancel?: () => void;
+}
+
+export function TwoFactorChallengePage({onSuccess, onCancel}: Props) {
   const [usingRecoveryCode, setUsingRecoveryCode] = useState(false);
 
   const form = useForm<FormValue>();
@@ -27,7 +32,10 @@ export function TwoFactorChallengePage() {
   const handleLoginSuccess = useHandleLoginSuccess();
   const handleCompleteChallenge = (payload: FormValue) => {
     completeChallenge.mutate(payload, {
-      onSuccess: response => handleLoginSuccess(response),
+      onSuccess: response => {
+        onSuccess?.();
+        handleLoginSuccess(response);
+      },
       onError: r => onFormQueryError(r, form),
     });
   };
@@ -96,6 +104,18 @@ export function TwoFactorChallengePage() {
         >
           <Trans message="Continue" />
         </Button>
+        {onCancel ? (
+          <Button
+            type="button"
+            variant="ghost"
+            color="primary"
+            size="sm"
+            className="mt-2 -ml-2 block"
+            onClick={onCancel}
+          >
+            <Trans message="Back to sign in" />
+          </Button>
+        ) : null}
       </Form>
     </AuthLayout>
   );

@@ -68,8 +68,20 @@ class _Auth {
     return !!this.user;
   }
 
+  /**
+   * Whether the account currently holds a VALID subscription.
+   *
+   * Must mirror Billable::subscribed() on the server, which scans the user's
+   * subscriptions for one that passes Subscription::valid(). Reading only
+   * "is there a subscription object" is wrong: SubscriptionResource always
+   * serialises `valid` for every subscription row, expired ones included, so
+   * `valid != null` is true for a lapsed subscriber too. That divergence is
+   * what let a user whose subscription had ended keep seeing subscriber-only
+   * behaviour such as stripped ads.
+   */
   get isSubscribed(): boolean {
-    return this.user?.subscription?.valid != null;
+    const valid: unknown = this.user?.subscription?.valid;
+    return valid === true || valid === '1' || valid === 'true';
   }
 
   get guestRole() {

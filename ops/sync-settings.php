@@ -69,6 +69,26 @@ $updates = [
     // LRCLIB lyrics integration — make the lyrics UI reachable
     'player.hide_lyrics' => false,
     'player.hide_lyrics_button' => false,
+    /*
+     * Download button visibility.
+     *
+     * This is a global frontend gate, not the authorization check:
+     * `useDownloadEntitlement` reads `player.enable_download` and returns false
+     * immediately when it is off, which hides the button for EVERY user
+     * regardless of plan. The seeded default is false (see
+     * resources/defaults/default-settings.php), and default-settings.php only
+     * ever runs on first install, so flipping the default there would not
+     * change an already-installed production database. Hence the override here.
+     *
+     * Enabling this does NOT hand downloads out for free: the entitlement hook
+     * also requires a `music.download`/`music.offline` permission, those
+     * permissions are granted only to the Premium products by
+     * database/migrations/2026_10_05_120000_realign_plans_and_enable_billing.php,
+     * and app/Policies/TrackPolicy.php::download() re-checks server-side on the
+     * actual download request. So the switch is only what makes the button
+     * *visible* to users the server already allows to download.
+     */
+    'player.enable_download' => true,
 ];
 
 $changed = 0;

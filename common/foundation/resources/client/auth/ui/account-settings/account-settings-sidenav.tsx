@@ -41,7 +41,7 @@ export function AccountSettingsSidenav({items}: Props) {
   const baseUrl = `${settings.base_url}/account-settings`;
 
   return (
-    <aside className="sticky top-18.5 hidden shrink-0 flex-col gap-2 lg:flex">
+    <aside className="flex w-full shrink-0 flex-row gap-2 overflow-x-auto pb-2 lg:sticky lg:top-18.5 lg:w-auto lg:flex-col lg:overflow-x-visible lg:pb-0">
       {items}
 
       <AccountSettingsSidenavItem
@@ -50,8 +50,11 @@ export function AccountSettingsSidenav({items}: Props) {
       >
         <Trans message="Account details" />
       </AccountSettingsSidenavItem>
-      {isSubscribed ? (
-        <AccountSettingsSidenavItem icon={<CreditCardIcon />} to="/billing">
+      {settings.billing?.integrated ? (
+        <AccountSettingsSidenavItem
+          icon={<CreditCardIcon />}
+          to={isSubscribed ? '/billing' : '/pricing'}
+        >
           <Trans message="Billing" />
         </AccountSettingsSidenavItem>
       ) : null}
@@ -112,7 +115,11 @@ interface ItemProps {
 }
 export function AccountSettingsSidenavItem({children, icon, to}: ItemProps) {
   return (
-    <LinkButton variant="ghost" className="justify-start" to={to}>
+    <LinkButton
+      variant="ghost"
+      className="shrink-0 justify-start whitespace-nowrap"
+      to={to}
+    >
       {icon}
       {children}
     </LinkButton>

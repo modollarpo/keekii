@@ -118,6 +118,14 @@ class TrackPolicy extends BasePolicy
 
     public function download(?User $user, Track $track)
     {
+        // Downloading a file must never be a guest capability. When $user is
+        // null, BasePolicy::hasPermission() answers from the guest role, so any
+        // stale music.offline grant on that role hands the whole track to an
+        // unauthenticated request.
+        if (!$user) {
+            return false;
+        }
+
         return $this->hasPermission($user, 'music.download') ||
             $this->hasPermission($user, 'music.offline');
     }
