@@ -5,6 +5,7 @@ import {
   CreativeUploadField,
 } from '@app/admin/ads-datatable-page/creative-upload-field';
 import {CrupdateAdPayload} from '@app/admin/ads-datatable-page/requests/use-create-ad';
+import {FileUploadProvider} from '@common/uploads/uploader/file-upload-provider';
 import {Field} from '@shadcn/forms/field';
 import {HookForm} from '@shadcn/forms/form/hook-form';
 import {Input} from '@shadcn/forms/input/input';
@@ -29,7 +30,12 @@ export function CrupdateAdForm() {
   const type = useWatch<CrupdateAdPayload, 'type'>({name: 'type'});
 
   return (
-    <Field.Group>
+    // FileUploadProvider backs the CreativeUploadField slots: their
+    // useActiveUpload() reads a context-based uploader store that is null
+    // outside an admin page's normal uploads area, and reading null crashes
+    // the dialog mount. Covered by the surrounding create/update dialogs.
+    <FileUploadProvider>
+      <Field.Group>
       <HookForm.Field name="name">
         <Field.Label>
           <Trans message="Name" />
@@ -185,6 +191,7 @@ export function CrupdateAdForm() {
         <Field.Error />
       </HookForm.Field>
     </Field.Group>
+    </FileUploadProvider>
   );
 }
 
