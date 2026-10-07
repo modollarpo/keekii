@@ -116,6 +116,13 @@ jobs:
             cd /var/www/bemusic
             sudo -u www-data composer dump-autoload --optimize 2>/dev/null || echo 'composer dump-autoload skipped'
             sudo -u www-data php artisan optimize:clear 2>/dev/null || echo 'optimize:clear skipped'
+            # Fail the deploy before a single migration if any class cannot be
+            # loaded. php -l never resolves a class against its parent, so a
+            # model missing an abstract method from BaseModel parses cleanly
+            # and then fatals on first use - which is how Ad took
+            # /api/v1/ads/next to a 500 for one deploy. Deliberately NOT
+            # followed by `|| echo`: set -e has to abort here.
+            sudo -u www-data -H php /var/www/bemusic/scripts/check-class-loading.php
             # yt-dlp for the direct-stream fallback endpoint (best-effort)
             if [ ! -x /usr/local/bin/yt-dlp ]; then
               sudo curl -sL --retry 3 -o /usr/local/bin/yt-dlp https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp || true

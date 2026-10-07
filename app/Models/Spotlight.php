@@ -63,6 +63,18 @@ class Spotlight extends BaseModel
         ];
     }
 
+    public function toSearchableArray(): array
+    {
+        // Keys must stay real spotlights columns: scopeMysqlSearch treats
+        // every non-filterable key as a column name in the MATCH() clause.
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'blurb' => $this->blurb,
+            'badge' => $this->badge,
+        ];
+    }
+
     public static function getModelTypeAttribute(): string
     {
         return self::MODEL_TYPE;
