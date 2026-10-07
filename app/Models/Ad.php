@@ -84,6 +84,30 @@ class Ad extends BaseModel
         return $this->hasMany(AdPlay::class);
     }
 
+    public function toNormalizedArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->advertiser_name,
+            'model_type' => self::MODEL_TYPE,
+        ];
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'advertiser_name' => $this->advertiser_name,
+        ];
+    }
+
+    public static function getModelTypeAttribute(): string
+    {
+        return self::MODEL_TYPE;
+    }
+
     public static function filterableFields(): array
     {
         return ['id', 'is_active', 'type', 'created_at', 'updated_at'];
