@@ -1,5 +1,6 @@
 import {SiteConfig} from '@app/site-config';
 import {SettingsPreviewListener} from '@common/admin/settings/preview/settings-preview-listener';
+import {ConfirmPasswordDialogProvider} from '@common/auth/ui/confirm-password/confirm-password-dialog';
 import {auth, useAuth} from '@common/auth/use-auth';
 import {ColorSchemeProvider} from '@common/core/color-scheme-provider';
 import {BaseSiteConfig} from '@common/core/settings/base-site-config';
@@ -48,7 +49,9 @@ export function CommonProvider({router}: Props) {
           <ColorSchemeProvider>
             <Tooltip.Provider>
               <NuqsAdapter>
-                <RouterProvider router={router} useTransitions />
+                <ConfirmPasswordDialogProvider>
+                  <RouterProvider router={router} useTransitions />
+                </ConfirmPasswordDialogProvider>
               </NuqsAdapter>
             </Tooltip.Provider>
           </ColorSchemeProvider>
