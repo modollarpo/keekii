@@ -200,6 +200,11 @@ jobs:
             # the guest role for anonymous requests, so this is what actually
             # closes the open download. Idempotent, same explicit-path reason.
             sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_000000_revoke_download_permissions_from_free_roles.php || echo 'download permission revoke migration skipped'
+            # Player ads: the ads and ad_plays tables plus the Ads entry in the
+            # admin sidebar. Same explicit-path reason as the migrations above.
+            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_110000_create_ads_table.php || echo 'ads table migration skipped'
+            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_110001_create_ad_plays_table.php || echo 'ad_plays table migration skipped'
+            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_120000_add_ads_admin_sidebar_nav_item.php || echo 'admin sidebar ads entry migration skipped'
             sudo -u www-data php artisan cache:clear 2>/dev/null || echo 'cache:clear skipped'
             sudo -u www-data php artisan config:clear 2>/dev/null || echo 'config:clear skipped'
             sudo systemctl restart php8.3-fpm
