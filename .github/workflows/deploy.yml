@@ -209,9 +209,18 @@ jobs:
             sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_000000_revoke_download_permissions_from_free_roles.php || echo 'download permission revoke migration skipped'
             # Player ads: the ads and ad_plays tables plus the Ads entry in the
             # admin sidebar. Same explicit-path reason as the migrations above.
-            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_110000_create_ads_table.php || echo 'ads table migration skipped'
-            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_110001_create_ad_plays_table.php || echo 'ad_plays table migration skipped'
-            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_120000_add_ads_admin_sidebar_nav_item.php || echo 'admin sidebar ads entry migration skipped'
+            # Unlike the lines above these three deliberately do NOT end in
+            # `|| echo ... skipped`: the ad_plays foreign key failed once and
+            # the deploy still reported success, so a schema this deploy
+            # cannot work without has to fail it.
+            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_110000_create_ads_table.php
+            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_110001_create_ad_plays_table.php
+            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_120000_add_ads_admin_sidebar_nav_item.php
+            # Adds whatever resources/defaults/permissions.php has gained since
+            # this database was first installed - notably ads.view/create/update/
+            # delete, without which only an admin can reach /admin/ads. Additive
+            # and idempotent, same non-swallowing reason as the three above.
+            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_130000_seed_permissions_from_config.php
             sudo -u www-data php artisan cache:clear 2>/dev/null || echo 'cache:clear skipped'
             sudo -u www-data php artisan config:clear 2>/dev/null || echo 'config:clear skipped'
             sudo systemctl restart php8.3-fpm
