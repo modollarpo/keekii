@@ -2,6 +2,7 @@ import {usePlayerStore} from '@common/player/hooks/use-player-store';
 import {PlayerStoreContext} from '@common/player/player-context';
 import {HtmlAudioProvider} from '@common/player/providers/html-audio-provider';
 import {HtmlVideoProvider} from '@common/player/providers/html-video-provider';
+import {CrossfadeAudioProvider} from '@common/player/providers/crossfade-audio-provider';
 import {YoutubeProvider} from '@common/player/providers/youtube/youtube-provider';
 import {Trans} from '@ui/i18n/trans';
 import {IllustratedMessage} from '@ui/images/illustrated-message';
@@ -37,6 +38,12 @@ export const PlayerOutlet = memo(({className}: Props) => {
 
 function Provider() {
   const provider = usePlayerStore(s => s.providerName);
+  const isContinuousMix = usePlayerStore(s => (s.options as any)?.continuousMix);
+
+  if (isContinuousMix && (provider === 'htmlAudio' || provider === 'hls' || provider === 'dash')) {
+    return <CrossfadeAudioProvider />;
+  }
+
   switch (provider) {
     case 'youtube':
       return <YoutubeProvider />;
