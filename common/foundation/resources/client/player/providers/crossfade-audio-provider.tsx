@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useState, useCallback, useContext } from 'react';
 import { usePlayerStore } from '@common/player/hooks/use-player-store';
 import { PlayerStoreContext } from '@common/player/player-context';
 import { useHtmlMediaApi } from '@common/player/providers/html-media/use-html-media-api';

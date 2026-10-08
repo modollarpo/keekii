@@ -28,7 +28,7 @@ export function ContinuousMixToggleButton({
   return (
     <Button
       variant={enabled ? 'default' : 'outline'}
-      color={enabled ? 'primary' : 'neutral'}
+      color={enabled ? 'primary' : 'default'}
       size="xs"
       onClick={onToggle}
       title="Toggle Continuous DJ Mix Crossfade Mode"
