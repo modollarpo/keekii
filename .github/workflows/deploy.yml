@@ -134,11 +134,21 @@ jobs:
                 sudo chmod +x /usr/local/bin/yt-dlp
               fi
             fi
-            # Read-only diagnostic for the DJ-mix analysis job: it needs an
-            # ffmpeg binary on the server (settings player.ffmpeg_binary,
-            # defaulting to /usr/bin/ffmpeg) and logs a skip when missing.
-            # Non-failing - the job degrades honestly without it.
-            echo "--- ffmpeg presence: $(command -v ffmpeg || echo 'ffmpeg not found') ---"
+            # ffmpeg for the DJ-mix analysis job (settings player.ffmpeg_binary,
+            # defaulting to /usr/bin/ffmpeg; the job logs a skip if missing).
+            # Self-healing - installs when absent, no-ops once present so the
+            # deploy time stays flat, and never fails the deploy: the job
+            # degrades honestly without it.
+            if [ ! -x /usr/bin/ffmpeg ]; then
+              sudo apt-get update -qq >/dev/null 2>&1 || true
+              if sudo apt-get install -y -qq --no-install-recommends ffmpeg >/dev/null 2>&1; then
+                echo "ffmpeg installed: $(/usr/bin/ffmpeg -version 2>/dev/null | head -1)"
+              else
+                echo "ffmpeg install failed (retried on next deploy)"
+              fi
+            else
+              echo "ffmpeg present: $(/usr/bin/ffmpeg -version 2>/dev/null | head -1)"
+            fi
             # Branding + multi-source settings sync (idempotent, no tinker needed)
             sudo mkdir -p /var/www/bemusic/storage/app/public/branding-images
             sudo cp -f /var/www/bemusic/ops/logo-assets/keekii-logo-*.png /var/www/bemusic/storage/app/public/branding-images/ || echo 'branding logo copy skipped'
