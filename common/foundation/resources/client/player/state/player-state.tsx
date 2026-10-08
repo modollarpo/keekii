@@ -45,6 +45,11 @@ export interface PlayerState {
 
   isBuffering: boolean;
   isPlaying: boolean;
+  // true only inside the crossfade provider's synchronous handoff: tells
+  // stop() (the first statement of playNext) that the outgoing track already
+  // ended and the incoming one is playing, so pausing/seeking to 0 would cut
+  // the mix. Consumed (reset) by stop().
+  crossfadeHandoff?: boolean;
   streamType: MediaStreamType;
   // whether playback has started at least once
   playbackStarted: boolean;

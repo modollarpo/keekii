@@ -40,7 +40,9 @@ function Provider() {
   const provider = usePlayerStore(s => s.providerName);
   const isContinuousMix = usePlayerStore(s => !!s.options.continuousMix);
 
-  if (isContinuousMix && (provider === 'htmlAudio' || provider === 'hls' || provider === 'dash')) {
+  // only plain <audio> sources can be mixed: an <audio> element cannot play
+  // hls/dash manifests, so those providers stay on their own machinery
+  if (isContinuousMix && provider === 'htmlAudio') {
     return <CrossfadeAudioProvider />;
   }
 

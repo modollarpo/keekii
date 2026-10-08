@@ -1,6 +1,10 @@
 import {usePlayerStore} from '@common/player/hooks/use-player-store';
 import {PlayerStoreContext} from '@common/player/player-context';
-import {setContinuousMixEnabled} from '@common/player/utils/continuous-mix';
+import {
+  clampCrossfadeDuration,
+  setCrossfadeDuration,
+  setContinuousMixEnabled,
+} from '@common/player/utils/continuous-mix';
 import {Button} from '@shadcn/button/button';
 import {Trans} from '@ui/i18n/trans';
 import {useCallback, useContext} from 'react';
@@ -11,6 +15,19 @@ import {useCallback, useContext} from 'react';
 export function useContinuousMix() {
   const store = useContext(PlayerStoreContext);
   const enabled = usePlayerStore(s => !!s.options.continuousMix);
+  const duration = usePlayerStore(s => s.options.crossfadeDuration ?? 5);
+
+  const setDuration = useCallback(
+    (seconds: number) => {
+      const next = clampCrossfadeDuration(seconds);
+      setCrossfadeDuration(next);
+      const state = store.getState();
+      store.setState({
+        options: {...state.options, crossfadeDuration: next},
+      });
+    },
+    [store],
+  );
 
   const toggle = useCallback(() => {
     const state = store.getState();
@@ -57,7 +74,7 @@ export function useContinuousMix() {
     timeoutId = setTimeout(() => finish(false), 5000);
   }, [store]);
 
-  return {enabled, toggle};
+  return {enabled, toggle, duration, setDuration};
 }
 
 export function ContinuousMixToggleButton() {

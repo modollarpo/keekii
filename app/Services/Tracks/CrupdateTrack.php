@@ -2,6 +2,7 @@
 
 namespace App\Services\Tracks;
 
+use App\Jobs\AnalyzeTrackAudioJob;
 use App\Models\Album;
 use App\Models\Genre;
 use App\Models\Tag;
@@ -138,6 +139,18 @@ class CrupdateTrack
             initialSrc: $initialSrc,
             initialImage: $initialImage,
         );
+
+        // analyse fresh audio (new track or swapped src) off the request
+        // cycle: BPM/key + waveform peaks for the DJ-mix feature. Only
+        // locally-stored audio can be analysed, so don't queue provider
+        // streams or remote-CDN files at all.
+        if (
+            $track->src &&
+            $initialSrc !== $track->src &&
+            (new SyncFileEntryModels())->isUrlForUploadedFile($track->src)
+        ) {
+            AnalyzeTrackAudioJob::dispatch($track);
+        }
 
         return $track;
     }

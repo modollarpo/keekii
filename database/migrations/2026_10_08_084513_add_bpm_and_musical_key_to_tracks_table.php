@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::table('tracks', function (Blueprint $table) {
             $table->unsignedDecimal('bpm', 5, 2)->nullable();
             $table->string('musical_key', 10)->nullable();
-            $table->json('waveform_peaks')->nullable();
         });
     }
 
@@ -24,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tracks', function (Blueprint $table) {
-            $table->dropColumn(['bpm', 'musical_key', 'waveform_peaks']);
+            $table->dropColumn(['bpm', 'musical_key']);
         });
     }
 };

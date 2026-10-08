@@ -8,6 +8,7 @@ import {useMiniPlayerIsHidden} from '@app/web-player/overlay/use-mini-player-is-
 import {DownloadTrackButton} from '@app/web-player/player-controls/download-track-button';
 import {LyricsButton} from '@app/web-player/player-controls/lyrics-button';
 import {AutoplayButton} from '@app/web-player/player-controls/autoplay-button';
+import {CuedTrackWaveform} from '@app/web-player/player-controls/cued-track-waveform';
 import {SleepTimerButton} from '@app/web-player/player-controls/sleep-timer-button';
 import {PlaybackControls} from '@app/web-player/player-controls/playback-controls';
 import {useCuedTrack} from '@app/web-player/player-controls/use-cued-track';
@@ -150,6 +151,7 @@ function PlayerContent({overlayRef}: PlayerContentProps) {
         {isMaximized && (
           <Fragment>
             <QueuedTrack />
+            <CuedTrackWaveform className="mx-auto mb-3 w-full max-w-6xl shrink-0 px-3.5" />
             <PlaybackControls className="mx-auto mb-auto w-full max-w-6xl shrink-0 px-3.5" />
           </Fragment>
         )}

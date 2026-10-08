@@ -105,9 +105,23 @@ export function useHtmlMediaInternalState(
     };
   }, []);
 
-  // reload metadata when new media is cued
+  // reload metadata when new media is cued — unless the element is already
+  // on that exact source: the crossfade handoff points the incoming element
+  // at cuedMedia's src while it is pre-buffering, and a load() here would
+  // restart it mid-mix. Source comparison ignores the #t= media fragment.
   useEffect(() => {
-    ref.current?.load();
+    const el = ref.current;
+    const target = cuedMedia?.src;
+    if (el && target) {
+      const attr = el.getAttribute('src');
+      if (
+        attr &&
+        attr.split('#')[0] === target.split('#')[0]
+      ) {
+        return;
+      }
+    }
+    el?.load();
   }, [cuedMedia?.src, ref]);
 
   return {

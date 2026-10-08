@@ -23,7 +23,10 @@ import {
   MediaItem,
   YoutubeMediaItem,
 } from '@common/player/media-item';
-import {getContinuousMixEnabled} from '@common/player/utils/continuous-mix';
+import {
+  getContinuousMixEnabled,
+  getCrossfadeDuration,
+} from '@common/player/utils/continuous-mix';
 
 // ---------------------------------------------------------------------------
 // Autoplay preference — stored in localStorage so it survives page reloads.
@@ -216,6 +219,7 @@ let cuePending = false;
 export const playerStoreOptions: Partial<PlayerStoreOptions> = {
   persistQueueInLocalStorage: true,
   continuousMix: getContinuousMixEnabled(),
+  crossfadeDuration: getCrossfadeDuration(),
   defaultVolume: getBootstrapData().settings.player?.default_volume,
   setMediaSessionMetadata,
   youtube: {

@@ -31,6 +31,24 @@ export function playerQueue(state: () => PlayerState) {
     return getPointer() === state().originalQueue.length - 1;
   };
 
+  /**
+   * The item playback would advance to on playbackEnd, without moving the
+   * queue. Returns undefined when the normal ended-flow owns the advance
+   * instead: repeat-one, the end of the queue (loadMoreMediaItems /
+   * repeat-all wrap run there), or a next item this audio-only crossfade
+   * provider cannot play.
+   */
+  const peekNext = (): MediaItem | undefined => {
+    if (state().repeat === 'one') return undefined;
+    const pointer = getPointer();
+    // media that never joined the queue (e.g. an ad) has no successor here
+    if (pointer < 0) return undefined;
+    const next = state().shuffledQueue[pointer + 1];
+    if (!next) return undefined;
+    if (next.provider !== 'htmlAudio' || !next.src) return undefined;
+    return next;
+  };
+
   return {
     getPointer,
     getCurrent,
@@ -39,5 +57,6 @@ export function playerQueue(state: () => PlayerState) {
     getNext,
     getPrevious,
     isLast,
+    peekNext,
   };
 }

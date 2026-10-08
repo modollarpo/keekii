@@ -21,6 +21,9 @@ export interface PlayerStoreOptions {
   autoPlay?: boolean;
   // opt-in continuous-mix mode: swaps in the crossfade audio provider
   continuousMix?: boolean;
+  // crossfade length in seconds (0 disables the mix, practical max 12);
+  // used by the crossfade provider when continuousMix is on
+  crossfadeDuration?: number;
   initialData?: PlayerInitialData;
   listeners?: Partial<Listeners>;
   defaultVolume?: number;

@@ -134,6 +134,11 @@ jobs:
                 sudo chmod +x /usr/local/bin/yt-dlp
               fi
             fi
+            # Read-only diagnostic for the DJ-mix analysis job: it needs an
+            # ffmpeg binary on the server (settings player.ffmpeg_binary,
+            # defaulting to /usr/bin/ffmpeg) and logs a skip when missing.
+            # Non-failing - the job degrades honestly without it.
+            echo "--- ffmpeg presence: $(command -v ffmpeg || echo 'ffmpeg not found') ---"
             # Branding + multi-source settings sync (idempotent, no tinker needed)
             sudo mkdir -p /var/www/bemusic/storage/app/public/branding-images
             sudo cp -f /var/www/bemusic/ops/logo-assets/keekii-logo-*.png /var/www/bemusic/storage/app/public/branding-images/ || echo 'branding logo copy skipped'
@@ -221,6 +226,10 @@ jobs:
             # delete, without which only an admin can reach /admin/ads. Additive
             # and idempotent, same non-swallowing reason as the three above.
             sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_06_130000_seed_permissions_from_config.php
+            # DJ-mix audio analysis columns (bpm, musical_key) written by
+            # AnalyzeTrackAudioJob. Same non-swallowing reason as above: the
+            # queue job fails every dispatch without them.
+            sudo -u www-data -H php /var/www/bemusic/artisan migrate --force --path=database/migrations/2026_10_08_084513_add_bpm_and_musical_key_to_tracks_table.php
             sudo -u www-data php artisan cache:clear 2>/dev/null || echo 'cache:clear skipped'
             sudo -u www-data php artisan config:clear 2>/dev/null || echo 'config:clear skipped'
             sudo systemctl restart php8.3-fpm

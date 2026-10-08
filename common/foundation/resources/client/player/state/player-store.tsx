@@ -253,6 +253,14 @@ export const createPlayerStore = (
             get().providerApi?.pause();
           },
           stop: () => {
+            // crossfade handoff: playbackEnd fires from the outgoing
+            // element's ended event, so "stopping" here would pause the
+            // already-playing incoming track. The flag is consumed so a
+            // later, genuine stop() still runs.
+            if (get().crossfadeHandoff) {
+              set({crossfadeHandoff: false});
+              return;
+            }
             if (!get().isPlaying) return;
             get().pause();
             get().seek(0);
