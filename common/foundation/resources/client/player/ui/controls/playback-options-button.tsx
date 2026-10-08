@@ -1,9 +1,10 @@
 import {usePlayerActions} from '@common/player/hooks/use-player-actions';
 import {usePlayerStore} from '@common/player/hooks/use-player-store';
-import {useContinuousMix} from '@common/player/ui/controls/continuous-mix-toggle';
-import {MAX_CROSSFADE_SECONDS} from '@common/player/utils/continuous-mix';
+import {
+  CrossfadeDurationSlider,
+  useContinuousMix,
+} from '@common/player/ui/controls/continuous-mix-toggle';
 import {Button, ButtonColor, ButtonSize} from '@shadcn/button/button';
-import {Slider} from '@shadcn/forms/slider/slider';
 import {Popover} from '@shadcn/popover/popover';
 import {Switch} from '@shadcn/forms/switch/switch';
 import {Trans} from '@ui/i18n/trans';
@@ -122,35 +123,17 @@ function OptionsListPanel({onActivePanelChange}: OptionsPanelProps) {
       </div>
       {continuousMix.enabled && (
         <div className="border-b px-3 py-2">
-          <Slider.Root
-            min={0}
-            max={MAX_CROSSFADE_SECONDS}
-            step={1}
-            value={continuousMix.duration}
-            onValueChange={value =>
-              continuousMix.setDuration(
-                Array.isArray(value) ? value[0] : value,
-              )
-            }
-            aria-label="Crossfade length"
-          >
-            <div className="mb-1 flex items-center justify-between">
-              <span className="text-sm">
-                <Trans message="Crossfade" />
-              </span>
-              <span className="text-xs tabular-nums text-muted-foreground">
-                {continuousMix.duration === 0
-                  ? 'Off'
-                  : `${continuousMix.duration}s`}
-              </span>
-            </div>
-            <Slider.Control>
-              <Slider.Track>
-                <Slider.Indicator />
-                <Slider.Thumb aria-label="Crossfade seconds" />
-              </Slider.Track>
-            </Slider.Control>
-          </Slider.Root>
+          <div className="mb-1 flex items-center justify-between">
+            <span className="text-sm">
+              <Trans message="Crossfade" />
+            </span>
+            <span className="text-xs tabular-nums text-muted-foreground">
+              {continuousMix.duration === 0
+                ? 'Off'
+                : `${continuousMix.duration}s`}
+            </span>
+          </div>
+          <CrossfadeDurationSlider />
         </div>
       )}
       <MenuButton

@@ -5,7 +5,10 @@ import {MainSeekbar} from '@app/web-player/player-controls/seekbar/main-seekbar'
 import {PlayButton} from '@common/player/ui/controls/play-button';
 import {RepeatButton} from '@common/player/ui/controls/repeat-button';
 import {ShuffleButton} from '@common/player/ui/controls/shuffle-button';
-import {ContinuousMixToggleButton} from '@common/player/ui/controls/continuous-mix-toggle';
+import {
+  ContinuousMixToggleButton,
+  CrossfadeDurationButton,
+} from '@common/player/ui/controls/continuous-mix-toggle';
 import {cn} from '@ui/utils/cn';
 import {useIsMobileMediaQuery} from '@ui/utils/hooks/is-mobile-media-query';
 
@@ -37,6 +40,7 @@ function PlaybackButtons() {
       )}
     >
       <ContinuousMixToggleButton />
+      <CrossfadeDurationButton />
       <ShuffleButton className="hover:scale-105 active:scale-95 keekii-interactive" />
       <AdPreviousButton iconClassName="size-6" className="hover:scale-105 active:scale-95 keekii-interactive" />
       <div className="relative flex items-center justify-center">

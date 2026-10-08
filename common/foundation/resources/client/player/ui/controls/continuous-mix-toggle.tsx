@@ -1,12 +1,16 @@
 import {usePlayerStore} from '@common/player/hooks/use-player-store';
 import {PlayerStoreContext} from '@common/player/player-context';
 import {
+  MAX_CROSSFADE_SECONDS,
   clampCrossfadeDuration,
   setCrossfadeDuration,
   setContinuousMixEnabled,
 } from '@common/player/utils/continuous-mix';
 import {Button} from '@shadcn/button/button';
+import {Popover} from '@shadcn/popover/popover';
+import {Slider} from '@shadcn/forms/slider/slider';
 import {Trans} from '@ui/i18n/trans';
+import {BlendIcon} from 'lucide-react';
 import {useCallback, useContext} from 'react';
 
 // Reads the current opt-in continuous-mix state from the player store and
@@ -90,5 +94,76 @@ export function ContinuousMixToggleButton() {
     >
       <Trans message={enabled ? 'DJ Mix: On' : 'DJ Mix: Off'} />
     </Button>
+  );
+}
+
+// 0-12s crossfade length slider, shared by the main-bar popover and the
+// playback options panel. Changes apply live: the crossfade provider reads
+// the duration from store state on every watcher tick.
+export function CrossfadeDurationSlider() {
+  const {duration, setDuration} = useContinuousMix();
+
+  return (
+    <Slider.Root
+      min={0}
+      max={MAX_CROSSFADE_SECONDS}
+      step={1}
+      value={duration}
+      onValueChange={value =>
+        setDuration(Array.isArray(value) ? value[0] : value)
+      }
+      aria-label="Crossfade length"
+    >
+      <Slider.Control>
+        <Slider.Track>
+          <Slider.Indicator />
+          <Slider.Thumb aria-label="Crossfade seconds" />
+        </Slider.Track>
+      </Slider.Control>
+    </Slider.Root>
+  );
+}
+
+// Main playback bar entry point for the crossfade length: only meaningful
+// (and only shown) while the mix is on.
+export function CrossfadeDurationButton() {
+  const enabled = usePlayerStore(s => !!s.options.continuousMix);
+  const duration = usePlayerStore(s => s.options.crossfadeDuration ?? 5);
+
+  if (!enabled) return null;
+
+  return (
+    <Popover.Root>
+      <Popover.Trigger
+        render={
+          <Button
+            variant="outline"
+            size="xs"
+            className="tabular-nums"
+            aria-label="Crossfade length"
+          />
+        }
+      >
+        <BlendIcon className="size-3.5" />
+        {duration}s
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content
+          side="top"
+          align="start"
+          className="dark w-64 gap-0 p-3"
+        >
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-sm">
+              <Trans message="Crossfade" />
+            </span>
+            <span className="text-xs tabular-nums text-muted-foreground">
+              {duration === 0 ? <Trans message="Off" /> : `${duration}s`}
+            </span>
+          </div>
+          <CrossfadeDurationSlider />
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
   );
 }
