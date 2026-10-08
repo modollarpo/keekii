@@ -12,8 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tracks', function (Blueprint $table) {
-            $table->unsignedDecimal('bpm', 5, 2)->nullable();
-            $table->string('musical_key', 10)->nullable();
+            // guarded: this file was renamed after being authored, so an
+            // earlier run under the old name may already have applied it
+            if (!Schema::hasColumn('tracks', 'bpm')) {
+                $table->decimal('bpm', 5, 2)->unsigned()->nullable();
+            }
+            if (!Schema::hasColumn('tracks', 'musical_key')) {
+                $table->string('musical_key', 10)->nullable();
+            }
         });
     }
 
@@ -23,7 +29,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tracks', function (Blueprint $table) {
-            $table->dropColumn(['bpm', 'musical_key']);
+            $columns = array_filter(
+                ['bpm', 'musical_key'],
+                fn ($column) => Schema::hasColumn('tracks', $column),
+            );
+            if ($columns) {
+                $table->dropColumn($columns);
+            }
         });
     }
 };
