@@ -6,7 +6,6 @@ import {PlayButton} from '@common/player/ui/controls/play-button';
 import {RepeatButton} from '@common/player/ui/controls/repeat-button';
 import {ShuffleButton} from '@common/player/ui/controls/shuffle-button';
 import {ContinuousMixToggleButton} from '@common/player/ui/controls/continuous-mix-toggle';
-import {usePlayerStore} from '@common/player/hooks/use-player-store';
 import {cn} from '@ui/utils/cn';
 import {useIsMobileMediaQuery} from '@ui/utils/hooks/is-mobile-media-query';
 
@@ -28,14 +27,6 @@ export function PlaybackControls({className}: Props) {
 
 function PlaybackButtons() {
   const isMobile = useIsMobileMediaQuery();
-  const store = usePlayerStore(s => s);
-  const isContinuousMix = (store.options as any).continuousMix ?? false;
-
-  const toggleContinuousMix = () => {
-    const next = !isContinuousMix;
-    (store.options as any).continuousMix = next;
-    window.location.reload();
-  };
 
   // need to add a gap on mobile between buttons and seekbar, otherwise seekbar will be impossible to tap
   return (
@@ -45,7 +36,7 @@ function PlaybackButtons() {
         isMobile && 'mb-5',
       )}
     >
-      <ContinuousMixToggleButton enabled={isContinuousMix} onToggle={toggleContinuousMix} />
+      <ContinuousMixToggleButton />
       <ShuffleButton className="hover:scale-105 active:scale-95 keekii-interactive" />
       <AdPreviousButton iconClassName="size-6" className="hover:scale-105 active:scale-95 keekii-interactive" />
       <div className="relative flex items-center justify-center">

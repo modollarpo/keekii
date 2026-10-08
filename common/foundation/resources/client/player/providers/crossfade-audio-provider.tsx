@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback, useContext } from 'react';
+import { useEffect, useMemo, useRef, useState, useCallback, useContext, type SyntheticEvent } from 'react';
 import { usePlayerStore } from '@common/player/hooks/use-player-store';
 import { PlayerStoreContext } from '@common/player/player-context';
 import { useHtmlMediaApi } from '@common/player/providers/html-media/use-html-media-api';
@@ -30,6 +30,20 @@ export function CrossfadeAudioProvider() {
   const state = useHtmlMediaInternalState(activeRef);
   const events = useHtmlMediaEvents(state);
   const providerApi = useHtmlMediaApi(state);
+
+  // Autoplay policy: a context created before any user gesture starts
+  // suspended, which would silently mute everything routed through it.
+  // Resume it as soon as media playback actually starts.
+  const eventsWithAudioContextResume = useMemo(
+    () => ({
+      ...events,
+      onPlaying: (e: SyntheticEvent<HTMLMediaElement>) => {
+        audioContextRef.current?.resume().catch(() => {});
+        events.onPlaying?.(e);
+      },
+    }),
+    [events],
+  );
 
   // Initialize Web Audio API nodes once on mount
   useEffect(() => {
@@ -93,6 +107,7 @@ export function CrossfadeAudioProvider() {
   const triggerCrossfade = useCallback((nextSrc: string, duration = 5) => {
     const ctx = audioContextRef.current;
     if (!ctx || !gainNodeARef.current || !gainNodeBRef.current) return;
+    ctx.resume().catch(() => {});
 
     const nextSlot = activeSlot === 'A' ? 'B' : 'A';
     const nextAudioRef = nextSlot === 'A' ? audioRefA : audioRefB;
@@ -133,7 +148,7 @@ export function CrossfadeAudioProvider() {
         src={activeSlot === 'A' ? src : undefined}
         autoPlay={autoPlay && activeSlot === 'A'}
         muted={muted}
-        {...(activeSlot === 'A' ? events : {})}
+        {...(activeSlot === 'A' ? eventsWithAudioContextResume : {})}
       />
       <audio
         className={`absolute inset-0 h-full w-full ${activeSlot === 'B' ? 'block' : 'hidden'}`}
@@ -141,7 +156,7 @@ export function CrossfadeAudioProvider() {
         src={activeSlot === 'B' ? src : undefined}
         autoPlay={autoPlay && activeSlot === 'B'}
         muted={muted}
-        {...(activeSlot === 'B' ? events : {})}
+        {...(activeSlot === 'B' ? eventsWithAudioContextResume : {})}
       />
     </div>
   );

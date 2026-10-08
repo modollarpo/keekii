@@ -19,6 +19,8 @@ type Listeners = Omit<ListenersWithState, 'error'> & {
 export interface PlayerStoreOptions {
   persistQueueInLocalStorage?: boolean;
   autoPlay?: boolean;
+  // opt-in continuous-mix mode: swaps in the crossfade audio provider
+  continuousMix?: boolean;
   initialData?: PlayerInitialData;
   listeners?: Partial<Listeners>;
   defaultVolume?: number;

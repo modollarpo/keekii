@@ -1,5 +1,6 @@
 import {usePlayerActions} from '@common/player/hooks/use-player-actions';
 import {usePlayerStore} from '@common/player/hooks/use-player-store';
+import {useContinuousMix} from '@common/player/ui/controls/continuous-mix-toggle';
 import {Button, ButtonColor, ButtonSize} from '@shadcn/button/button';
 import {Popover} from '@shadcn/popover/popover';
 import {Switch} from '@shadcn/forms/switch/switch';
@@ -89,8 +90,7 @@ function OptionsListPanel({onActivePanelChange}: OptionsPanelProps) {
   const activeRate = usePlayerStore(s => s.playbackRate);
   const availableQualities = usePlayerStore(s => s.playbackQualities);
   const activeQuality = usePlayerStore(s => s.playbackQuality);
-  const isContinuousMix = usePlayerStore(s => (s.options as any)?.continuousMix ?? false);
-  const store = usePlayerStore(s => s);
+  const continuousMix = useContinuousMix();
 
   const availableTextTracks = usePlayerStore(s => s.textTracks);
   const textTrackId = usePlayerStore(s => s.currentTextTrack);
@@ -114,11 +114,8 @@ function OptionsListPanel({onActivePanelChange}: OptionsPanelProps) {
           <span className="text-sm"><Trans message="Continuous DJ Mix" /></span>
         </div>
         <Switch
-          checked={isContinuousMix}
-          onCheckedChange={(checked: boolean) => {
-            (store.options as any).continuousMix = checked;
-            window.location.reload();
-          }}
+          checked={continuousMix.enabled}
+          onCheckedChange={() => continuousMix.toggle()}
         />
       </div>
       <MenuButton

@@ -38,7 +38,7 @@ export const PlayerOutlet = memo(({className}: Props) => {
 
 function Provider() {
   const provider = usePlayerStore(s => s.providerName);
-  const isContinuousMix = usePlayerStore(s => (s.options as any)?.continuousMix);
+  const isContinuousMix = usePlayerStore(s => !!s.options.continuousMix);
 
   if (isContinuousMix && (provider === 'htmlAudio' || provider === 'hls' || provider === 'dash')) {
     return <CrossfadeAudioProvider />;
