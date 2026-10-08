@@ -2,6 +2,7 @@ import {usePlayerActions} from '@common/player/hooks/use-player-actions';
 import {usePlayerStore} from '@common/player/hooks/use-player-store';
 import {Button, ButtonColor, ButtonSize} from '@shadcn/button/button';
 import {Popover} from '@shadcn/popover/popover';
+import {Switch} from '@shadcn/forms/switch/switch';
 import {Trans} from '@ui/i18n/trans';
 import {cn} from '@ui/utils/cn';
 import {AnimatePresence, m} from 'framer-motion';
@@ -12,6 +13,7 @@ import {
   ChevronRightIcon,
   GaugeIcon,
   LanguagesIcon,
+  RadioIcon,
   Settings2Icon,
   SettingsIcon,
 } from 'lucide-react';
@@ -87,6 +89,8 @@ function OptionsListPanel({onActivePanelChange}: OptionsPanelProps) {
   const activeRate = usePlayerStore(s => s.playbackRate);
   const availableQualities = usePlayerStore(s => s.playbackQualities);
   const activeQuality = usePlayerStore(s => s.playbackQuality);
+  const isContinuousMix = usePlayerStore(s => (s.options as any)?.continuousMix ?? false);
+  const store = usePlayerStore(s => s);
 
   const availableTextTracks = usePlayerStore(s => s.textTracks);
   const textTrackId = usePlayerStore(s => s.currentTextTrack);
@@ -104,6 +108,19 @@ function OptionsListPanel({onActivePanelChange}: OptionsPanelProps) {
       transition={{type: 'tween', duration: 0.14}}
       className="flex flex-col py-1"
     >
+      <div className="flex items-center justify-between px-3 py-2 border-b">
+        <div className="flex items-center gap-2">
+          <RadioIcon className="size-4 text-primary" />
+          <span className="text-sm"><Trans message="Continuous DJ Mix" /></span>
+        </div>
+        <Switch
+          checked={isContinuousMix}
+          onCheckedChange={(checked: boolean) => {
+            (store.options as any).continuousMix = checked;
+            window.location.reload();
+          }}
+        />
+      </div>
       <MenuButton
         icon={<GaugeIcon />}
         value={`${activeRate}x`}
