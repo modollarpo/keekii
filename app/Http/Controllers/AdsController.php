@@ -6,6 +6,7 @@ use App\Models\Ad;
 use App\Models\AdPlay;
 use App\QueryBuilders\AdsQueryBuilder;
 use App\Resources\AdResource;
+use App\Services\Ads\AdNetworkClient;
 use App\Services\Ads\LogAdPlay;
 use Common\Core\Demo\BlockedOnDemoSite;
 use Illuminate\Http\Request;
@@ -50,15 +51,27 @@ class AdsController extends Controller
     /**
      * Pick the next ad to pre-roll ahead of a track.
      *
-     * Deliberately not gated on `ads.view`: this is the listener-facing
-     * selection endpoint, and listeners hold no admin permissions. Returning
-     * a null payload is a normal outcome and simply means "no ad", which the
-     * client treats as a green light to play music.
+     * The KIKI ad network is the primary source: when it is configured and
+     * returns a fill, that creative is served and the network owns the
+     * impression. Otherwise the locally managed `ads` table is consulted, so
+     * an install without the network (or one whose call fails) behaves exactly
+     * as before. Returning null is a normal outcome and simply means "no ad",
+     * which the client treats as a green light to play music.
      *
      * @operationId nextPlayerAd
      */
     public function next(Request $request)
     {
+        $remote = app(AdNetworkClient::class)->request(
+            contentId: $request->input('content_id'),
+        );
+
+        if ($remote) {
+            return response()->json([
+                'data' => (new AdResource($remote))->toArray($request),
+            ]);
+        }
+
         $ad = Ad::pickEligible();
 
         return response()->json([
@@ -69,15 +82,33 @@ class AdsController extends Controller
     /**
      * Open an impression for a served ad.
      *
-     * Listener-facing like `next`, so it is deliberately not gated on
-     * `ads.view`. Only the creative loading is recorded here; how it ended is
-     * reported separately by finishPlay, and an impression that never gets
-     * that second call stays in ad_plays with a null outcome.
+     * For a network ad the impression was already opened server-side when the
+     * decision was made, so this fires the first tracking beacon and echoes
+     * the network impression id so the client can close it later. For a local
+     * ad it records a row in ad_plays as before.
      *
      * @operationId logAdPlay
      */
-    public function logPlay(int $id)
+    public function logPlay(int $id, Request $request)
     {
+        if ($request->boolean('remote')) {
+            $impressionId = (string) $request->input('impression_id');
+
+            if ($impressionId !== '') {
+                app(AdNetworkClient::class)->beacon(
+                    $request->input('tracking.impression') ?: null,
+                );
+            }
+
+            return response()->json([
+                'data' => [
+                    'id' => $impressionId,
+                    'impression_id' => $impressionId,
+                    'remote' => true,
+                ],
+            ]);
+        }
+
         $ad = Ad::findOrFail($id);
         $play = (new LogAdPlay())->start($ad);
 
@@ -87,16 +118,32 @@ class AdsController extends Controller
     /**
      * Close an ad impression with completed or skipped.
      *
+     * A remote impression id (a uuid, not an ad_plays row) fires the matching
+     * completion/skip beacon. A local impression id closes its ad_plays row.
+     *
      * @operationId finishAdPlay
      */
-    public function finishPlay(int $playId, Request $request)
+    public function finishPlay(string $playId, Request $request)
     {
         $data = $request->validate([
             'outcome' => [
                 'required',
                 Rule::in([AdPlay::OUTCOME_COMPLETED, AdPlay::OUTCOME_SKIPPED]),
             ],
+            'remote' => ['nullable', 'boolean'],
+            'tracking' => ['nullable', 'array'],
         ]);
+
+        if ($request->boolean('remote')) {
+            $event = $data['outcome'] === AdPlay::OUTCOME_COMPLETED
+                ? 'complete'
+                : 'skip';
+            app(AdNetworkClient::class)->beacon(
+                $request->input("tracking.$event") ?: null,
+            );
+
+            return response()->noContent();
+        }
 
         $play = AdPlay::findOrFail($playId);
         (new LogAdPlay())->finish($play, $data['outcome']);

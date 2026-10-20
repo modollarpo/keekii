@@ -16,6 +16,18 @@ class Ad extends BaseModel
 
     protected $guarded = ['id'];
 
+    /**
+     * Set by AdNetworkClient on a transient, unsaved ad. These never touch
+     * the `ads` table - they only travel with the instance into the resource
+     * and the frontend.
+     *
+     * @var array<string, mixed>
+     */
+    public array $remote_tracking = [];
+    public bool $remote = false;
+    public ?string $remote_impression_id = null;
+    public ?string $remote_ad_id = null;
+
     protected $casts = [
         'id' => 'integer',
         'weight' => 'integer',

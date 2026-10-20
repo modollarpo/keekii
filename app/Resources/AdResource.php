@@ -31,6 +31,13 @@ class AdResource extends JsonResource
             'impressions' => $this->impressions,
             'completions' => $this->completions,
             'skips' => $this->skips,
+            // Remote (KIKI network) fill. `remote` tells the client this ad
+            // was decided by the network, so it opens the impression against
+            // the network rather than the local ads table. `tracking` carries
+            // the signed beacon URLs; null for locally managed ads.
+            'remote' => (bool) $this->remote,
+            'remote_impression_id' => $this->remote_impression_id,
+            'tracking' => $this->remote ? $this->remote_tracking : null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'model_type' => Ad::MODEL_TYPE,

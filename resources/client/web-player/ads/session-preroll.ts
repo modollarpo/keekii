@@ -39,8 +39,13 @@ let capTimer: ReturnType<typeof setTimeout> | null = null;
 // The impression the server opened for the ad currently serving, resolved to
 // its id. Held as a promise rather than an id because the outcome can be
 // decided (skip, natural end) before the impression response comes back, and
-// the two have to be sent in order. Null when nothing is outstanding.
-let impressionRequest: Promise<number | null> | null = null;
+// the two have to be sent in order. Null when nothing is outstanding. A local
+// ad resolves to the ad_plays row id; a network ad to its opaque impression
+// id, which is also the token the beacons are keyed by.
+let impressionRequest: Promise<number | string | null> | null = null;
+// The ad the outstanding impression belongs to. Retained separately from `ad`
+// because finish() nulls that out before the log is flushed on a microtask.
+let servedAdForLog: Ad | null = null;
 // Decided by playback, written only when the impression is finally closed.
 let pendingOutcome: AdOutcome | null = null;
 // True from the moment the creative is on screen until its log has been
@@ -176,8 +181,21 @@ export function markAdSkipped(): void {
 function startAdPlay(servedAd: Ad): void {
   pendingOutcome = null;
   loggingOpen = true;
+  // Network ads carry their own impression id and signed beacons; the server
+  // opened the impression at decision time, so this just fires the start
+  // beacon and remembers the ids needed to close it. Local ads open a
+  // ad_plays row and resolve to its numeric id.
+  const remote = servedAd.remote === true;
+  servedAdForLog = servedAd;
+  // For a network ad the impression is keyed by its remote id, which the
+  // server already opened; `id` in the path is an unused sentinel.
+  const pathId = remote ? 0 : servedAd.id;
   impressionRequest = apiClient
-    .post<{data?: {id?: number}}>(`ads/${servedAd.id}/plays`)
+    .post<{data?: {id?: number | string}}>(`ads/${pathId}/plays`, {
+      remote,
+      impression_id: servedAd.remote_impression_id ?? undefined,
+      tracking: servedAd.tracking ?? undefined,
+    })
     .then(r => r.data?.data?.id ?? null)
     .catch(() => null);
 }
@@ -190,7 +208,10 @@ function startAdPlay(servedAd: Ad): void {
 function finishAdPlayLog(): void {
   const request = impressionRequest;
   const outcome = pendingOutcome;
+  const remote = servedAdForLog?.remote === true;
+  const tracking = servedAdForLog?.tracking ?? null;
   impressionRequest = null;
+  servedAdForLog = null;
   pendingOutcome = null;
   loggingOpen = false;
 
@@ -199,7 +220,12 @@ function finishAdPlayLog(): void {
   void request
     .then(id => {
       if (id == null) return;
-      return apiClient.post(`ads/plays/${id}/finish`, {outcome});
+      return apiClient.post(`ads/plays/${id}/finish`, {
+        outcome,
+        remote,
+        impression_id: remote ? String(id) : undefined,
+        tracking: tracking ?? undefined,
+      });
     })
     .catch(() => {});
 }
@@ -220,8 +246,10 @@ async function fetchNextAd(): Promise<void> {
  * An ad with a missing or wrong-typed creative must not consume the session
  * slot - dropping it means the listener simply gets music.
  */
-function isServableAd(candidate: Ad | null | undefined): candidate is Ad {
+export function isServableAd(candidate: Ad | null | undefined): candidate is Ad {
   if (!candidate) return false;
+  // A network audio fill has no still image; only the voiceover is required.
+  if (candidate.remote) return !!candidate.voiceover_path;
   if (candidate.type === 'video') return !!candidate.video_path;
   if (candidate.type === 'imageWithVoice') {
     return !!candidate.voiceover_path && !!candidate.image_path;
