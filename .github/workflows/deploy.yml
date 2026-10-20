@@ -173,6 +173,27 @@ jobs:
                 sudo bash -c "echo '${flag}=true' >> /var/www/bemusic/.env"
               fi
             done
+            # KIKI ad network (remote pre-roll fill). Upserted the same way as the
+            # flags above so a redeploy corrects the values instead of appending
+            # duplicates. The secret is the same HMAC key the kiki-app verifies
+            # its service tokens with; without it the client stays unconfigured
+            # and the app falls back to local ads only.
+            set_kiki_env() {
+              local key="$1" value="$2"
+              if grep -q "^${key}=" /var/www/bemusic/.env; then
+                # `|` delimiter: the values contain `/` and `:`, never `|`.
+                # `&` in the replacement is literal-escaped.
+                local esc
+                esc=$(printf '%s' "${value}" | sed 's/[&|]/\\&/g')
+                sudo sed -i "s|^${key}=.*|${key}=${esc}|" /var/www/bemusic/.env
+              else
+                echo "${key}=${value}" | sudo tee -a /var/www/bemusic/.env >/dev/null
+              fi
+            }
+            set_kiki_env KIKI_ADS_BASE_URL "https://keekii.net"
+            set_kiki_env KIKI_ADS_SECRET "${{ secrets.KIKI_ADS_SECRET }}"
+            set_kiki_env KIKI_ADS_PROPERTY "music"
+            set_kiki_env KIKI_ADS_TIMEOUT "2"
             sudo -u www-data -H php /var/www/bemusic/artisan geoip:update || echo 'geoip:update skipped (creds missing or no network)'
             # Seed clearly-labelled demo artists so per-country channels have content,
             # then map them to the geo homepage (idempotent: only seeds empty markets).
